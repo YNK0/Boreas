@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(oden:architect)",
+      "Skill(oden:analyze)",
+      "Skill(oden:spec)",
+      "Skill(oden:checklist)",
+      "Bash(test:*)",
+      "Bash(for f in \"C:\\\\Users\\\\Francisco Magaña\\\\Desktop\\\\ODEN\\\\Boreas\\\\docs\\\\reference\\\\modules\"/*.md)",
+      "Bash(done)"
+    ]
+  }
+}
