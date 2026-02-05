@@ -89,10 +89,10 @@ export default function FAQSection() {
                 className="bg-white rounded-lg shadow-sm border border-gray-200"
               >
                 <button
-                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
+                  className="w-full px-4 lg:px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors touch-target"
                   onClick={() => toggleItem(index)}
                 >
-                  <span className="font-medium text-gray-900 pr-4">
+                  <span className="font-medium text-gray-900 pr-4 text-sm lg:text-base leading-relaxed">
                     {faq.question}
                   </span>
                   {openItems.has(index) ? (
@@ -103,8 +103,8 @@ export default function FAQSection() {
                 </button>
 
                 {openItems.has(index) && (
-                  <div className="px-6 pb-4">
-                    <p className="text-gray-600 leading-relaxed">
+                  <div className="px-4 lg:px-6 pb-4">
+                    <p className="text-gray-600 leading-relaxed text-sm lg:text-base">
                       {faq.answer}
                     </p>
                   </div>
@@ -131,7 +131,7 @@ export default function FAQSection() {
         </div>
 
         {/* Additional help section */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div className="mt-12 lg:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-4xl mx-auto">
           <div className="text-center">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl">📞</span>

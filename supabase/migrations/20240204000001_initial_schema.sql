@@ -197,45 +197,45 @@ CREATE TABLE landing_analytics (
 );
 
 -- Create indexes for performance
-CREATE INDEX CONCURRENTLY idx_leads_email ON leads(email);
-CREATE INDEX CONCURRENTLY idx_leads_status ON leads(status);
-CREATE INDEX CONCURRENTLY idx_leads_assigned ON leads(assigned_to);
-CREATE INDEX CONCURRENTLY idx_leads_source ON leads(source);
-CREATE INDEX CONCURRENTLY idx_leads_created ON leads(created_at DESC);
-CREATE INDEX CONCURRENTLY idx_leads_status_created ON leads(status, created_at DESC);
+CREATE INDEX idx_leads_email ON leads(email);
+CREATE INDEX idx_leads_status ON leads(status);
+CREATE INDEX idx_leads_assigned ON leads(assigned_to);
+CREATE INDEX idx_leads_source ON leads(source);
+CREATE INDEX idx_leads_created ON leads(created_at DESC);
+CREATE INDEX idx_leads_status_created ON leads(status, created_at DESC);
 
-CREATE INDEX CONCURRENTLY idx_clients_email ON clients(email);
-CREATE INDEX CONCURRENTLY idx_clients_status ON clients(status);
-CREATE INDEX CONCURRENTLY idx_clients_plan ON clients(plan_type);
-CREATE INDEX CONCURRENTLY idx_clients_business ON clients(business_type);
+CREATE INDEX idx_clients_email ON clients(email);
+CREATE INDEX idx_clients_status ON clients(status);
+CREATE INDEX idx_clients_plan ON clients(plan_type);
+CREATE INDEX idx_clients_business ON clients(business_type);
 
-CREATE INDEX CONCURRENTLY idx_lead_notes_lead ON lead_notes(lead_id);
-CREATE INDEX CONCURRENTLY idx_lead_notes_user ON lead_notes(user_id);
-CREATE INDEX CONCURRENTLY idx_lead_notes_created ON lead_notes(created_at DESC);
+CREATE INDEX idx_lead_notes_lead ON lead_notes(lead_id);
+CREATE INDEX idx_lead_notes_user ON lead_notes(user_id);
+CREATE INDEX idx_lead_notes_created ON lead_notes(created_at DESC);
 
-CREATE INDEX CONCURRENTLY idx_projects_client ON projects(client_id);
-CREATE INDEX CONCURRENTLY idx_projects_type ON projects(type);
-CREATE INDEX CONCURRENTLY idx_projects_status ON projects(status);
+CREATE INDEX idx_projects_client ON projects(client_id);
+CREATE INDEX idx_projects_type ON projects(type);
+CREATE INDEX idx_projects_status ON projects(status);
 
-CREATE INDEX CONCURRENTLY idx_client_calls_client ON client_calls(client_id);
-CREATE INDEX CONCURRENTLY idx_client_calls_user ON client_calls(user_id);
-CREATE INDEX CONCURRENTLY idx_client_calls_scheduled ON client_calls(scheduled_at);
+CREATE INDEX idx_client_calls_client ON client_calls(client_id);
+CREATE INDEX idx_client_calls_user ON client_calls(user_id);
+CREATE INDEX idx_client_calls_scheduled ON client_calls(scheduled_at);
 
-CREATE INDEX CONCURRENTLY idx_client_metrics_client ON client_metrics(client_id);
-CREATE INDEX CONCURRENTLY idx_client_metrics_project ON client_metrics(project_id);
-CREATE INDEX CONCURRENTLY idx_client_metrics_type ON client_metrics(metric_type);
-CREATE INDEX CONCURRENTLY idx_client_metrics_period ON client_metrics(recorded_at DESC);
+CREATE INDEX idx_client_metrics_client ON client_metrics(client_id);
+CREATE INDEX idx_client_metrics_project ON client_metrics(project_id);
+CREATE INDEX idx_client_metrics_type ON client_metrics(metric_type);
+CREATE INDEX idx_client_metrics_period ON client_metrics(recorded_at DESC);
 
-CREATE INDEX CONCURRENTLY idx_email_logs_lead ON email_logs(lead_id);
-CREATE INDEX CONCURRENTLY idx_email_logs_client ON email_logs(client_id);
-CREATE INDEX CONCURRENTLY idx_email_logs_email ON email_logs(email);
-CREATE INDEX CONCURRENTLY idx_email_logs_template ON email_logs(template_name);
-CREATE INDEX CONCURRENTLY idx_email_logs_sent ON email_logs(sent_at DESC);
+CREATE INDEX idx_email_logs_lead ON email_logs(lead_id);
+CREATE INDEX idx_email_logs_client ON email_logs(client_id);
+CREATE INDEX idx_email_logs_email ON email_logs(email);
+CREATE INDEX idx_email_logs_template ON email_logs(template_name);
+CREATE INDEX idx_email_logs_sent ON email_logs(sent_at DESC);
 
-CREATE INDEX CONCURRENTLY idx_landing_analytics_session ON landing_analytics(session_id);
-CREATE INDEX CONCURRENTLY idx_landing_analytics_page ON landing_analytics(page_path);
-CREATE INDEX CONCURRENTLY idx_landing_analytics_utm_source ON landing_analytics(utm_source);
-CREATE INDEX CONCURRENTLY idx_landing_analytics_created ON landing_analytics(created_at DESC);
+CREATE INDEX idx_landing_analytics_session ON landing_analytics(session_id);
+CREATE INDEX idx_landing_analytics_page ON landing_analytics(page_path);
+CREATE INDEX idx_landing_analytics_utm_source ON landing_analytics(utm_source);
+CREATE INDEX idx_landing_analytics_created ON landing_analytics(created_at DESC);
 
 -- Unique constraints
 CREATE UNIQUE INDEX idx_client_metrics_unique ON client_metrics(client_id, project_id, metric_type, recorded_at);

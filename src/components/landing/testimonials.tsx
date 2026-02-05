@@ -1,4 +1,32 @@
+'use client'
+
+import { useState, useRef } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
 export default function TestimonialsSection() {
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -300, behavior: 'smooth' })
+    }
+  }
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 300, behavior: 'smooth' })
+    }
+  }
+
+  const checkScrollPosition = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
+      setCanScrollLeft(scrollLeft > 0)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10)
+    }
+  }
   const testimonials = [
     {
       id: 1,
@@ -105,8 +133,29 @@ export default function TestimonialsSection() {
           </div>
         </div>
 
-        {/* Grid of testimonials */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Mobile Carousel Navigation */}
+        <div className="md:hidden flex items-center justify-between mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">Desliza para ver más</h3>
+          <div className="flex gap-2">
+            <button
+              onClick={scrollLeft}
+              disabled={!canScrollLeft}
+              className="p-2 rounded-full bg-primary-100 text-primary-600 disabled:opacity-50 disabled:cursor-not-allowed touch-target"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={scrollRight}
+              disabled={!canScrollRight}
+              className="p-2 rounded-full bg-primary-100 text-primary-600 disabled:opacity-50 disabled:cursor-not-allowed touch-target"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Grid / Mobile Carousel */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.slice(1).map((testimonial) => (
             <div key={testimonial.id} className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-center mb-4">
@@ -129,6 +178,46 @@ export default function TestimonialsSection() {
                     {testimonial.company}
                   </div>
                   <div className="text-sm text-primary-600 font-medium">
+                    {testimonial.result}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Carousel */}
+        <div
+          ref={carouselRef}
+          onScroll={checkScrollPosition}
+          className="md:hidden flex gap-4 overflow-x-auto mobile-carousel pb-4"
+          style={{ scrollSnapType: 'x mandatory' }}
+        >
+          {testimonials.slice(1).map((testimonial) => (
+            <div
+              key={testimonial.id}
+              className="bg-white rounded-lg shadow p-6 min-w-[280px] max-w-[320px] mobile-carousel-item"
+            >
+              <div className="flex justify-center mb-4">
+                {renderStars(testimonial.rating)}
+              </div>
+
+              <blockquote className="text-gray-700 mb-6 italic text-sm leading-relaxed">
+                "{testimonial.quote}"
+              </blockquote>
+
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0">
+                  {testimonial.avatar}
+                </div>
+                <div className="min-w-0">
+                  <cite className="not-italic font-semibold text-gray-900 text-sm">
+                    {testimonial.name}
+                  </cite>
+                  <div className="text-xs text-gray-600 truncate">
+                    {testimonial.company}
+                  </div>
+                  <div className="text-xs text-primary-600 font-medium">
                     {testimonial.result}
                   </div>
                 </div>

@@ -110,7 +110,7 @@ INSERT INTO leads (name, email, company, business_type, status, source, utm_sour
 -- Landing analytics sample data for the last 30 days
 INSERT INTO landing_analytics (session_id, page_path, utm_source, utm_medium, utm_campaign, form_submitted, time_on_page, created_at)
 SELECT
-    'session_' || generate_random_uuid(),
+    'session_' || gen_random_uuid(),
     '/',
     CASE (random() * 4)::int
         WHEN 0 THEN 'google'

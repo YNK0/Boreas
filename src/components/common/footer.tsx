@@ -3,8 +3,8 @@ import Link from 'next/link'
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="container-boreas py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container-boreas py-8 lg:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
@@ -61,8 +61,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom section */}
-        <div className="border-t border-gray-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-gray-800 mt-8 lg:mt-12 pt-6 lg:pt-8">
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-6">
             {/* Copyright */}
             <div className="text-gray-400 text-sm">
               © 2024 Boreas. Todos los derechos reservados.
@@ -108,14 +108,14 @@ export default function Footer() {
             </div>
 
             {/* Legal Links */}
-            <div className="flex items-center gap-6 text-sm text-gray-400">
-              <Link href="/privacy" className="hover:text-white transition-colors">
+            <div className="flex items-center gap-4 lg:gap-6 text-sm text-gray-400">
+              <Link href="/privacy" className="hover:text-white transition-colors touch-target">
                 Privacidad
               </Link>
-              <Link href="/terms" className="hover:text-white transition-colors">
+              <Link href="/terms" className="hover:text-white transition-colors touch-target">
                 Términos
               </Link>
-              <Link href="/cookies" className="hover:text-white transition-colors">
+              <Link href="/cookies" className="hover:text-white transition-colors touch-target">
                 Cookies
               </Link>
             </div>

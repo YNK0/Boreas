@@ -105,9 +105,9 @@ export default function ContactFormSection() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {/* Name Field */}
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -116,7 +116,7 @@ export default function ContactFormSection() {
                   <input
                     id="name"
                     type="text"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.name ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Juan Pérez"
@@ -137,7 +137,7 @@ export default function ContactFormSection() {
                   <input
                     id="whatsapp"
                     type="tel"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.whatsapp ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="+52 123 456 7890"
@@ -158,7 +158,7 @@ export default function ContactFormSection() {
                   <input
                     id="email"
                     type="email"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.email ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="juan@empresa.com"
@@ -178,7 +178,7 @@ export default function ContactFormSection() {
                   </label>
                   <select
                     id="business_type"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.business_type ? 'border-red-300' : 'border-gray-300'
                     }`}
                     {...form.register('business_type')}
@@ -204,7 +204,7 @@ export default function ContactFormSection() {
                   <input
                     id="city"
                     type="text"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.city ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Ciudad de México"
@@ -225,7 +225,7 @@ export default function ContactFormSection() {
                   <input
                     id="company"
                     type="text"
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                    className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                       form.formState.errors.company ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Mi Empresa"
@@ -247,7 +247,7 @@ export default function ContactFormSection() {
                 <textarea
                   id="message"
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-primary-500 focus:border-primary-500 ${
+                  className={`w-full px-4 py-4 border rounded-lg focus:ring-primary-500 focus:border-primary-500 text-base touch-target ${
                     form.formState.errors.message ? 'border-red-300' : 'border-gray-300'
                   }`}
                   placeholder="Cuéntanos sobre tu negocio y qué quieres automatizar..."

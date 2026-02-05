@@ -12,12 +12,12 @@ export default function ProblemSolutionSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Problems */}
           <div className="problems">
             <h3 className="text-2xl font-bold mb-8 text-red-600 text-center">Sin Boreas</h3>
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg border border-red-100 hover:bg-red-100/50 transition-colors">
                 <div className="text-2xl">😩</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -29,7 +29,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg border border-red-100 hover:bg-red-100/50 transition-colors">
                 <div className="text-2xl">📱</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -41,7 +41,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg border border-red-100 hover:bg-red-100/50 transition-colors">
                 <div className="text-2xl">🔄</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -53,7 +53,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-red-50 rounded-lg border border-red-100 hover:bg-red-100/50 transition-colors">
                 <div className="text-2xl">📅</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -71,7 +71,7 @@ export default function ProblemSolutionSection() {
           <div className="solutions">
             <h3 className="text-2xl font-bold mb-8 text-green-600 text-center">Con Boreas</h3>
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border border-green-100 hover:bg-green-100/50 transition-colors">
                 <div className="text-2xl">⚡</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -83,7 +83,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border border-green-100 hover:bg-green-100/50 transition-colors">
                 <div className="text-2xl">🎯</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -95,7 +95,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border border-green-100 hover:bg-green-100/50 transition-colors">
                 <div className="text-2xl">📋</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">
@@ -107,7 +107,7 @@ export default function ProblemSolutionSection() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg">
+              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg border border-green-100 hover:bg-green-100/50 transition-colors">
                 <div className="text-2xl">💰</div>
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-1">

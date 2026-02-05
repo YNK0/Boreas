@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { healthCheck } from '@/lib/analytics/api-middleware';
 
 export async function GET() {
   try {
@@ -14,6 +15,10 @@ export async function GET() {
       throw new Error(`Missing environment variables: ${missingEnvVars.join(', ')}`);
     }
 
+    // Get performance metrics
+    const performanceSummary = healthCheck.getPerformanceSummary();
+    const isApiHealthy = healthCheck.isHealthy();
+
     return NextResponse.json({
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -21,8 +26,11 @@ export async function GET() {
       environment: process.env.VERCEL_ENV || 'development',
       checks: {
         environment: 'configured',
-        build: 'successful'
-      }
+        build: 'successful',
+        analytics: process.env.NEXT_PUBLIC_POSTHOG_KEY ? 'configured' : 'not_configured'
+      },
+      performance: performanceSummary,
+      apiHealth: isApiHealthy
     }, { status: 200 });
 
   } catch (error) {

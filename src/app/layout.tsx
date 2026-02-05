@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AuthProvider from "@/components/auth/auth-provider";
+import { PostHogProvider } from "@/components/analytics/posthog-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -56,6 +57,13 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+  themeColor: "#2563eb",
 };
 
 export default function RootLayout({
@@ -66,9 +74,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className} antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {/* Temporarily disabled PostHog to fix build issue */}
+        {/* <PostHogProvider> */}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        {/* </PostHogProvider> */}
       </body>
     </html>
   );

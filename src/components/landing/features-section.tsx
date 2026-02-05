@@ -76,26 +76,26 @@ export default function FeaturesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
+            <div key={index} className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-transparent hover:border-primary-100">
               <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
                 <feature.icon className="w-6 h-6 text-primary-600" />
               </div>
 
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">
                 {feature.title}
               </h3>
 
-              <p className="text-gray-600 mb-4 leading-relaxed">
+              <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base">
                 {feature.description}
               </p>
 
               <ul className="space-y-2">
                 {feature.benefits.map((benefit, benefitIndex) => (
-                  <li key={benefitIndex} className="flex items-center text-sm text-gray-700">
-                    <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-3 flex-shrink-0"></span>
-                    {benefit}
+                  <li key={benefitIndex} className="flex items-start text-sm text-gray-700 leading-relaxed">
+                    <span className="w-1.5 h-1.5 bg-primary-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                    <span className="flex-1">{benefit}</span>
                   </li>
                 ))}
               </ul>
@@ -104,16 +104,16 @@ export default function FeaturesSection() {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-16 text-center bg-primary-50 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="mt-12 lg:mt-16 text-center bg-primary-50 rounded-2xl p-6 lg:p-8">
+          <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">
             ¿Listo para ver estas features en acción?
           </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          <p className="text-gray-600 mb-6 max-w-2xl mx-auto text-sm lg:text-base leading-relaxed">
             Te mostramos cómo funciona Boreas específicamente para tu negocio en una demo de 15 minutos
           </p>
           <a
             href="#contact"
-            className="btn-primary text-lg px-8 py-4"
+            className="btn-primary text-base lg:text-lg px-6 lg:px-8 py-4 touch-target inline-block"
           >
             Ver Demo Personalizada
           </a>

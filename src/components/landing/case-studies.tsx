@@ -69,7 +69,7 @@ export default function CaseStudiesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {caseStudies.map((study) => (
             <div
               key={study.id}
@@ -115,24 +115,24 @@ export default function CaseStudiesSection() {
         </div>
 
         {/* Overall Stats */}
-        <div className="mt-16 bg-gray-900 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-8">Resultados promedio de nuestros clientes</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div>
-              <div className="text-3xl font-bold text-green-400">+45%</div>
-              <div className="text-gray-300">Más citas/reservas</div>
+        <div className="mt-12 lg:mt-16 bg-gray-900 rounded-2xl p-6 lg:p-8 text-white text-center">
+          <h3 className="text-xl lg:text-2xl font-bold mb-6 lg:mb-8">Resultados promedio de nuestros clientes</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+            <div className="space-y-1">
+              <div className="text-2xl lg:text-3xl font-bold text-green-400">+45%</div>
+              <div className="text-gray-300 text-sm lg:text-base">Más citas/reservas</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-400">-80%</div>
-              <div className="text-gray-300">Menos tiempo en WhatsApp</div>
+            <div className="space-y-1">
+              <div className="text-2xl lg:text-3xl font-bold text-blue-400">-80%</div>
+              <div className="text-gray-300 text-sm lg:text-base">Menos tiempo en WhatsApp</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-400">24/7</div>
-              <div className="text-gray-300">Atención disponible</div>
+            <div className="space-y-1">
+              <div className="text-2xl lg:text-3xl font-bold text-purple-400">24/7</div>
+              <div className="text-gray-300 text-sm lg:text-base">Atención disponible</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-yellow-400">ROI 3x</div>
-              <div className="text-gray-300">Retorno de inversión</div>
+            <div className="space-y-1">
+              <div className="text-2xl lg:text-3xl font-bold text-yellow-400">ROI 3x</div>
+              <div className="text-gray-300 text-sm lg:text-base">Retorno de inversión</div>
             </div>
           </div>
         </div>

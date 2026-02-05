@@ -7,7 +7,13 @@
       "Skill(oden:checklist)",
       "Bash(test:*)",
       "Bash(for f in \"C:\\\\Users\\\\Francisco Magaña\\\\Desktop\\\\ODEN\\\\Boreas\\\\docs\\\\reference\\\\modules\"/*.md)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(npx supabase:*)",
+      "Skill(oden:prd-new)",
+      "Skill(oden:prd-parse)",
+      "Skill(oden:epic-sync)",
+      "Skill(oden:epic-decompose)",
+      "Skill(oden:issue-start)"
     ]
   }
 }

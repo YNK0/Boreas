@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { contactFormSchema } from '@/lib/utils/validation'
 import { generateLeadScore } from '@/lib/utils/validation'
 import { createClient } from '@/lib/supabase/server'
+import { createMonitoredAPIHandler } from '@/lib/analytics/api-middleware'
 
 // Rate limiting store (in production, use Redis)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
@@ -50,7 +51,7 @@ function getClientIp(request: NextRequest): string {
   return 'anonymous'
 }
 
-export async function POST(request: NextRequest) {
+async function handleContactFormSubmission(request: NextRequest) {
   try {
     // Rate limiting check
     const clientIp = getClientIp(request)
@@ -250,3 +251,6 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+// Export the monitored version of the handler
+export const POST = createMonitoredAPIHandler(handleContactFormSubmission as any, '/api/contact');

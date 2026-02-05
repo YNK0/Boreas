@@ -8,6 +8,9 @@ import TestimonialsSection from '@/components/landing/testimonials';
 import ContactFormSection from '@/components/landing/contact-form-section';
 import FAQSection from '@/components/landing/faq-section';
 import Footer from '@/components/common/footer';
+// Temporarily disabled analytics
+// import { ScrollTracker, SectionTracker } from '@/components/analytics/tracking-components';
+// import { ConsentBanner } from '@/components/analytics/posthog-provider';
 
 export const metadata: Metadata = {
   title: "Automatización WhatsApp para Salones, Restaurantes y Clínicas",
@@ -26,34 +29,54 @@ export const metadata: Metadata = {
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
+      {/* Analytics tracking components - temporarily disabled */}
+      {/* <ScrollTracker /> */}
+
       {/* Header */}
       <Header />
 
       <main>
         {/* Hero Section */}
-        <HeroSection />
+        {/* <SectionTracker sectionName="hero"> */}
+          <HeroSection />
+        {/* </SectionTracker> */}
 
         {/* Features Section */}
-        <FeaturesSection />
+        {/* <SectionTracker sectionName="features"> */}
+          <FeaturesSection />
+        {/* </SectionTracker> */}
 
         {/* Problem-Solution Section */}
-        <ProblemSolutionSection />
+        {/* <SectionTracker sectionName="problem-solution"> */}
+          <ProblemSolutionSection />
+        {/* </SectionTracker> */}
 
-      {/* Case Studies Section */}
-      <CaseStudiesSection />
+        {/* Case Studies Section */}
+        {/* <SectionTracker sectionName="case-studies"> */}
+          <CaseStudiesSection />
+        {/* </SectionTracker> */}
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
+        {/* Testimonials Section */}
+        {/* <SectionTracker sectionName="testimonials"> */}
+          <TestimonialsSection />
+        {/* </SectionTracker> */}
 
-      {/* Contact Form Section */}
-      <ContactFormSection />
+        {/* Contact Form Section */}
+        {/* <SectionTracker sectionName="contact-form"> */}
+          <ContactFormSection />
+        {/* </SectionTracker> */}
 
-      {/* FAQ Section */}
-      <FAQSection />
+        {/* FAQ Section */}
+        {/* <SectionTracker sectionName="faq"> */}
+          <FAQSection />
+        {/* </SectionTracker> */}
 
         {/* Footer */}
         <Footer />
       </main>
+
+      {/* GDPR Consent Banner - temporarily disabled */}
+      {/* <ConsentBanner /> */}
     </div>
   );
 }
