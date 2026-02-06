@@ -14,7 +14,7 @@ export interface HeroVariant {
   subtitle: string
   ctaPrimary: string
   ctaSecondary: string
-  trustIndicators: string[]
+  trustIndicators: readonly string[]
   socialProof?: string
   urgency?: string
 }

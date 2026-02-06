@@ -29,10 +29,10 @@ export default function EmailConfirmationError({
 
       if (result.error) {
         setResendStatus('error')
-        setResendMessage(result.error.user_message || 'Error al reenviar confirmación')
+        setResendMessage((result.error as any)?.user_message || 'Error al reenviar confirmación')
       } else {
         setResendStatus('success')
-        setResendMessage(result.user_message || 'Email enviado exitosamente')
+        setResendMessage((result as any)?.user_message || 'Email enviado exitosamente')
       }
     } catch (error) {
       setResendStatus('error')

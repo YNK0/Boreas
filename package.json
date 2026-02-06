@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "check-imports": "node scripts/validate-imports.js",
+    "check-all": "npm run type-check && npm run check-imports && npm run lint",
+    "pre-commit": "node scripts/pre-commit-check.js",
+    "prepare": "husky install || echo 'husky not installed'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -34,6 +38,7 @@
     "@types/react-dom": "^18",
     "eslint": "^9",
     "eslint-config-next": "^15.1.6",
+    "glob": "^13.0.1",
     "postcss": "^8",
     "supabase": "^2.75.3",
     "tailwindcss": "^3.4.1",

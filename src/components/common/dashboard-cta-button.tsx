@@ -23,13 +23,13 @@ export default function DashboardCTAButton({
   showIcon = true,
   children
 }: DashboardCTAButtonProps) {
-  const { user, isLoading } = useAuthStore()
+  const { user, loading } = useAuthStore()
   const router = useRouter()
   const { track } = useAnalytics()
 
   // Handle click with smart routing
   const handleClick = () => {
-    if (isLoading) return
+    if (loading) return
 
     // Track the CTA click
     track('dashboard_cta_click', {
@@ -53,7 +53,7 @@ export default function DashboardCTAButton({
   const getButtonText = () => {
     if (children) return children
 
-    if (isLoading) return 'Cargando...'
+    if (loading) return 'Cargando...'
 
     if (user) {
       return 'Ir al Dashboard'
@@ -78,7 +78,7 @@ export default function DashboardCTAButton({
   }
 
   const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className} ${
-    isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'
+    loading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'
   }`
 
   return (
@@ -88,7 +88,7 @@ export default function DashboardCTAButton({
       position="cta"
       onClick={handleClick}
       className={combinedClassName}
-      disabled={isLoading}
+      disabled={loading}
       aria-label={`${getButtonText()} - ${user ? 'Access your dashboard' : 'Login to access dashboard'}`}
     >
       {showIcon && <BarChart3 className="w-5 h-5" aria-hidden="true" />}

@@ -1,18 +1,37 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/store/auth-store'
 import { useAuth } from '@/store/auth-store'
 import { LogOut, Users, TrendingUp, MessageSquare, Calendar, ExternalLink } from 'lucide-react'
 import ComingSoon, { ComingSoonBadge } from '@/components/ui/coming-soon'
+import WelcomeBanner from '@/components/onboarding/welcome-banner'
+import DashboardTour from '@/components/onboarding/dashboard-tour'
 
 export default function DashboardPage() {
   const { user, profile, isAuthenticated, loading } = useAuth()
   const { signOut, initialize } = useAuthStore()
 
+  // Onboarding state
+  const [showWelcome, setShowWelcome] = useState(false)
+  const [showTour, setShowTour] = useState(false)
+
   useEffect(() => {
     initialize()
   }, [initialize])
+
+  // Check if user is new (registered within last 24 hours)
+  useEffect(() => {
+    if (profile && user) {
+      const registrationDate = new Date(profile.created_at || user.created_at)
+      const daysSinceRegistration = Math.floor((Date.now() - registrationDate.getTime()) / (1000 * 60 * 60 * 24))
+
+      // Show welcome banner for users registered within last 3 days
+      if (daysSinceRegistration <= 3) {
+        setShowWelcome(true)
+      }
+    }
+  }, [profile, user])
 
   if (loading) {
     return (
@@ -37,10 +56,23 @@ export default function DashboardPage() {
     await signOut()
   }
 
+  const handleStartTour = () => {
+    setShowTour(true)
+  }
+
+  const handleCompleteTour = () => {
+    setShowTour(false)
+    setShowWelcome(false)
+  }
+
+  const handleSkipTour = () => {
+    setShowTour(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow">
+      <header className="bg-white shadow" data-tour="dashboard-header">
         <div className="container-boreas py-4">
           <div className="flex items-center justify-between">
             <div>
@@ -62,8 +94,15 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="container-boreas py-8">
+        {/* Welcome Banner for New Users */}
+        {showWelcome && (
+          <WelcomeBanner
+            onStartTour={handleStartTour}
+            onDismiss={() => setShowWelcome(false)}
+          />
+        )}
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" data-tour="messages-section">
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
               <div className="p-2 bg-blue-100 rounded-lg">
@@ -116,7 +155,7 @@ export default function DashboardPage() {
         {/* Content Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Recent Leads */}
-          <div className="bg-white rounded-lg shadow">
+          <div className="bg-white rounded-lg shadow" data-tour="clients-section">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900">Leads Recientes</h2>
             </div>
@@ -130,24 +169,24 @@ export default function DashboardPage() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-lg shadow">
+          <div className="bg-white rounded-lg shadow" data-tour="analytics-section">
             <div className="p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Actividad Reciente</h2>
+              <h2 className="text-lg font-semibold text-gray-900">Analytics</h2>
             </div>
             <div className="p-6">
               <div className="text-center text-gray-500">
                 <Calendar className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <p>No hay actividad reciente</p>
-                <p className="text-sm">La actividad del sistema aparecerá aquí</p>
+                <p>No hay métricas disponibles</p>
+                <p className="text-sm">Las métricas de automatización aparecerán aquí</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8 bg-white rounded-lg shadow">
+        <div className="mt-8 bg-white rounded-lg shadow" data-tour="settings-section">
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Acciones Rápidas</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Configuración Rápida</h2>
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -228,6 +267,13 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+
+      {/* Dashboard Tour */}
+      <DashboardTour
+        isActive={showTour}
+        onComplete={handleCompleteTour}
+        onSkip={handleSkipTour}
+      />
     </div>
   )
 }

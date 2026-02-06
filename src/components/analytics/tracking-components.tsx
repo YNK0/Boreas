@@ -23,7 +23,7 @@ export function ScrollTracker() {
 
 // Trackable button component
 interface TrackableCTAProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  trackingType: 'hero' | 'features' | 'pricing' | 'contact'
+  trackingType: 'hero' | 'features' | 'pricing' | 'contact' | 'dashboard'
   label: string
   position?: string
   children: React.ReactNode

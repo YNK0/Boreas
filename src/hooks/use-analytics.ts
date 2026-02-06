@@ -105,7 +105,7 @@ export function useCTATracking() {
   const { track } = useAnalytics()
 
   const trackCTAClick = useCallback((
-    type: 'hero' | 'features' | 'pricing' | 'contact',
+    type: 'hero' | 'features' | 'pricing' | 'contact' | 'dashboard',
     label: string,
     position?: string
   ) => {
@@ -114,6 +114,7 @@ export function useCTATracking() {
       features: TRACKING_EVENTS.FEATURES_CTA_CLICK,
       pricing: TRACKING_EVENTS.PRICING_CTA_CLICK,
       contact: TRACKING_EVENTS.CONTACT_FORM_STARTED,
+      dashboard: 'dashboard_cta_click', // Generic event for dashboard access
     }
 
     track(eventMap[type], {

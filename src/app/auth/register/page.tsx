@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthActions } from '@/store/auth-store'
-import { Eye, EyeOff, Loader2, CheckCircle } from 'lucide-react'
+import { Eye, EyeOff, Loader2 } from 'lucide-react'
 
 const registerSchema = z.object({
   name: z.string()
@@ -36,7 +36,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [registerError, setRegisterError] = useState<string | null>(null)
-  const [isSuccess, setIsSuccess] = useState(false)
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -63,37 +62,10 @@ export default function RegisterPage() {
       return
     }
 
-    setIsSuccess(true)
+    // Redirect to confirmation page with email parameter
+    router.push(`/auth/confirm-email?email=${encodeURIComponent(data.email)}`)
   }
 
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-              ¡Cuenta creada!
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Te hemos enviado un email de confirmación.
-            </p>
-            <p className="mt-4 text-sm text-gray-600">
-              Revisa tu bandeja de entrada para activar tu cuenta.
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/auth/login"
-                className="btn-primary"
-              >
-                Ir al login
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
