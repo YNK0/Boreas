@@ -14,11 +14,15 @@
 - [x] Metodología Oden implementada
 - [x] Primer registro diario iniciado
 - [x] Arquitectura técnica completa (3,796 líneas)
+- [x] Análisis competitivo exhaustivo (1,122 líneas)
+- [x] User personas detalladas (622 líneas)
 
 ### Archivos Creados/Modificados
 ```
 docs/reference/technical-decisions.md - Arquitectura expandida (3,796 líneas)
-CLAUDE.md - Actualizado status del proyecto
+docs/reference/competitive-analysis.md - Análisis completo (1,122 líneas)
+docs/reference/user-personas.md - 3 personas detalladas (622 líneas)
+CLAUDE.md - Actualizado progreso (69% de doc target)
 docs/development/current/boreas-mvp/ - Daily logging establecido
 ```
 
@@ -36,12 +40,12 @@ No commits hoy - trabajo previo completado en commits anteriores:
 
 | Métrica | Valor |
 |---------|-------|
-| Líneas agregadas | +700 (arquitectura) |
+| Líneas agregadas | +1,744 (análisis + personas) |
 | Líneas eliminadas | 0 |
 | Archivos nuevos | 2 |
-| Archivos modificados | 2 |
+| Archivos modificados | 4 |
 | Tests nuevos | 0 |
-| Tiempo de trabajo | 2h |
+| Tiempo de trabajo | 3h |
 
 ---
 
@@ -52,6 +56,9 @@ No commits hoy - trabajo previo completado en commits anteriores:
 - Estructura de documentación siguiendo Documentation-First Development
 - Arquitectura completa de 24 secciones: DB schema, APIs, seguridad, performance
 - Stack tecnológico validado: Next.js + Supabase + Vercel
+- Positioning competitivo: "Powerful & Simple" vs. ManyChat/Zapier/Calendly
+- Target market: 3 personas específicas (salon/restaurant/clinic owners)
+- Pricing strategy: $79-149/mes all-inclusive vs. competitors' hidden costs
 
 ### Tips Descubiertos
 - Importancia de registrar progreso diario desde el inicio del proyecto
@@ -69,8 +76,9 @@ No commits hoy - trabajo previo completado en commits anteriores:
 ### Pendientes
 | Issue | Severidad | Workaround |
 |-------|-----------|------------|
-| Falta análisis competitivo | Media | Ejecutar /oden:analyze como próximo paso |
-| Sin especificaciones módulos | Baja | Depende de análisis competitivo |
+| Sin especificaciones módulos | Media | Ejecutar /oden:spec para cada módulo core |
+| Falta plan implementación | Media | Depende de specs completadas |
+| Sin validación usuarios reales | Baja | Posponer hasta tener MVP mockups |
 
 ---
 
@@ -83,9 +91,9 @@ Ninguno actualmente - proyecto en fase de setup inicial
 ## ⏭️ Próximos Pasos
 
 ### Mañana
-1. [ ] Ejecutar `/oden:analyze` para análisis competitivo detallado
-2. [ ] Ejecutar `/oden:spec landing` para especificación de landing page
-3. [ ] Ejecutar `/oden:spec dashboard` para especificación de CRM
+1. [ ] Ejecutar `/oden:spec landing` para especificación de landing page
+2. [ ] Ejecutar `/oden:spec dashboard` para especificación de CRM
+3. [ ] Ejecutar `/oden:spec automation` para especificación de WhatsApp flows
 4. [ ] Ejecutar `/oden:plan` para plan de implementación semanal
 
 ### Dependencias
