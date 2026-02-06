@@ -4,7 +4,7 @@
  */
 
 import { PERFORMANCE_THRESHOLDS, TRACKING_EVENTS } from './posthog-config'
-import { getServerPostHog } from './posthog-config'
+import { getServerPostHog } from './posthog-server'
 
 export interface PerformanceMetric {
   name: string
@@ -271,11 +271,14 @@ export class APIPerformanceMonitor {
         timestamp: new Date().toISOString(),
       }
 
-      this.recordAPIMetric(performanceData)
+      // Don't await to avoid blocking the response
+      this.recordAPIMetric(performanceData).catch(error => {
+        console.error('Failed to record API metric:', error)
+      })
     }
   }
 
-  private recordAPIMetric(data: APIPerformanceData) {
+  private async recordAPIMetric(data: APIPerformanceData) {
     this.metrics.push(data)
 
     // Keep only last 1000 metrics to prevent memory leaks
@@ -285,7 +288,7 @@ export class APIPerformanceMonitor {
 
     // Track to PostHog if configured
     try {
-      const serverPostHog = getServerPostHog()
+      const serverPostHog = await getServerPostHog()
       if (serverPostHog) {
         serverPostHog.capture({
           distinctId: 'server',

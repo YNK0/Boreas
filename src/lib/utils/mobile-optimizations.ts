@@ -3,6 +3,13 @@
  * Performance and UX optimizations specifically for mobile devices
  */
 
+// Extend CSSStyleDeclaration to include webkit properties
+declare global {
+  interface CSSStyleDeclaration {
+    webkitOverflowScrolling: string;
+  }
+}
+
 import React from 'react'
 
 // Detect if user is on mobile device

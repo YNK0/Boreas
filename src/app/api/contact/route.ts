@@ -219,9 +219,52 @@ async function handleContactFormSubmission(request: NextRequest) {
       console.warn('Analytics insert error:', analyticsError)
     }
 
-    // TODO: Send notification email to admin
-    // TODO: Send confirmation email to lead
-    // TODO: Trigger automation sequences
+    // Send welcome email and admin notification
+    try {
+      const { emailService, scheduleFollowupEmails } = await import('@/lib/email/email-service')
+
+      const emailRecipient = {
+        name: formData.name,
+        email: formData.email,
+        businessType: formData.business_type as any,
+        company: formData.company
+      }
+
+      // Send welcome email to lead
+      const welcomeEmailResult = await emailService.sendWelcomeEmail(
+        emailRecipient,
+        (newLead as any)?.id
+      )
+
+      // Send admin notification
+      const adminNotificationResult = await emailService.sendAdminNotification({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        phone: formData.whatsapp,
+        businessType: formData.business_type,
+        message: formData.message,
+        leadScore: leadScore,
+        source: utmSource
+      })
+
+      // Schedule follow-up emails
+      if (welcomeEmailResult.success) {
+        scheduleFollowupEmails((newLead as any)?.id, emailRecipient)
+      }
+
+      // Log email results (don't fail the API if emails fail)
+      if (!welcomeEmailResult.success) {
+        console.warn('Welcome email failed:', welcomeEmailResult.error)
+      }
+      if (!adminNotificationResult.success) {
+        console.warn('Admin notification failed:', adminNotificationResult.error)
+      }
+
+    } catch (emailError) {
+      // Email failures shouldn't block the main flow
+      console.error('Email automation error:', emailError)
+    }
 
     return NextResponse.json(
       {

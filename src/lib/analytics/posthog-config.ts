@@ -67,25 +67,7 @@ export const POSTHOG_CLIENT_OPTIONS = {
 
 // Server-side PostHog instance (only for server-side usage)
 // Note: Server-side PostHog should be imported dynamically only in server contexts
-export const getServerPostHog = async () => {
-  // Only import on server side
-  if (typeof window !== 'undefined') {
-    throw new Error('getServerPostHog should only be called on the server side')
-  }
-
-  const { PostHog } = await import('posthog-node')
-
-  if (!POSTHOG_CONFIG.serverKey) {
-    throw new Error('PostHog server key not configured')
-  }
-
-  return new PostHog(
-    POSTHOG_CONFIG.serverKey,
-    {
-      host: POSTHOG_CONFIG.apiHost,
-    }
-  )
-}
+// This function is separated to prevent client-side bundling of server dependencies
 
 // Feature flags configuration
 export const FEATURE_FLAGS = {

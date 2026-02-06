@@ -216,7 +216,7 @@ export function useScrollTracking() {
   const timeThresholds = useRef<Set<number>>(new Set())
 
   useEffect(() => {
-    let startTime = Date.now()
+    const startTime = Date.now()
 
     const handleScroll = () => {
       const scrollPercent = Math.round(

@@ -74,12 +74,12 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${inter.className} antialiased`}>
-        {/* Temporarily disabled PostHog to fix build issue */}
-        {/* <PostHogProvider> */}
+        {/* PostHog Analytics Provider */}
+        <PostHogProvider>
           <AuthProvider>
             {children}
           </AuthProvider>
-        {/* </PostHogProvider> */}
+        </PostHogProvider>
       </body>
     </html>
   );
