@@ -23,7 +23,11 @@
       "Bash(node test-contact-api-simple.js:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Skill(oden:daily)",
+      "Bash(for f in docs/reference/modules/*.md)",
+      "Bash(find:*)",
+      "Bash(supabase:*)"
     ]
   }
 }

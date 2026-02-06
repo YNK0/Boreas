@@ -3,7 +3,8 @@
 import { useEffect } from 'react'
 import { useAuthStore } from '@/store/auth-store'
 import { useAuth } from '@/store/auth-store'
-import { LogOut, Users, TrendingUp, MessageSquare, Calendar } from 'lucide-react'
+import { LogOut, Users, TrendingUp, MessageSquare, Calendar, ExternalLink } from 'lucide-react'
+import ComingSoon, { ComingSoonBadge } from '@/components/ui/coming-soon'
 
 export default function DashboardPage() {
   const { user, profile, isAuthenticated, loading } = useAuth()
@@ -150,20 +151,46 @@ export default function DashboardPage() {
           </div>
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button className="p-4 text-left border border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-                <h3 className="font-medium text-gray-900">Ver Landing Page</h3>
+              <button
+                onClick={() => window.open('/', '_blank')}
+                className="p-4 text-left border border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="font-medium text-gray-900">Ver Landing Page</h3>
+                  <ExternalLink className="w-4 h-4 text-gray-400" />
+                </div>
                 <p className="text-sm text-gray-600 mt-1">Revisar cómo se ve la página de inicio</p>
               </button>
 
-              <button className="p-4 text-left border border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-                <h3 className="font-medium text-gray-900">Configurar Automatización</h3>
-                <p className="text-sm text-gray-600 mt-1">Configurar respuestas automáticas de WhatsApp</p>
-              </button>
+              <div className="relative">
+                <ComingSoon
+                  message="Configuración de WhatsApp Business API próximamente"
+                  feature="Templates, flows automáticos y respuestas inteligentes"
+                >
+                  <div className="p-4 text-left border border-gray-300 rounded-lg opacity-60 cursor-not-allowed">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-gray-900">Configurar Automatización</h3>
+                      <ComingSoonBadge text="Próximamente" className="ml-2" />
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">Configurar respuestas automáticas de WhatsApp</p>
+                  </div>
+                </ComingSoon>
+              </div>
 
-              <button className="p-4 text-left border border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
-                <h3 className="font-medium text-gray-900">Ver Métricas</h3>
-                <p className="text-sm text-gray-600 mt-1">Analizar rendimiento y conversiones</p>
-              </button>
+              <div className="relative">
+                <ComingSoon
+                  message="Panel de métricas avanzadas en desarrollo"
+                  feature="Analytics, conversiones, ROI y reporting automático"
+                >
+                  <div className="p-4 text-left border border-gray-300 rounded-lg opacity-60 cursor-not-allowed">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-gray-900">Ver Métricas</h3>
+                      <ComingSoonBadge text="En desarrollo" className="ml-2" />
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">Analizar rendimiento y conversiones</p>
+                  </div>
+                </ComingSoon>
+              </div>
             </div>
           </div>
         </div>

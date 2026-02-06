@@ -26,6 +26,33 @@ body {
   }
 }
 
+/* Coming Soon styles */
+@layer components {
+  .coming-soon-pulse {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+  }
+
+  .coming-soon-tooltip {
+    animation: slide-in-tooltip 0.2s ease-out forwards;
+  }
+
+  @keyframes slide-in-tooltip {
+    from {
+      opacity: 0;
+      transform: translateY(8px) translateX(-50%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) translateX(-50%);
+    }
+  }
+}
+
 /* Mobile-first responsive utilities */
 .touch-target {
   min-height: 44px;
