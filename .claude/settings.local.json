@@ -27,7 +27,8 @@
       "Skill(oden:daily)",
       "Bash(for f in docs/reference/modules/*.md)",
       "Bash(find:*)",
-      "Bash(supabase:*)"
+      "Bash(supabase:*)",
+      "Bash(netstat:*)"
     ]
   }
 }

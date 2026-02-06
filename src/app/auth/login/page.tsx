@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useAuthActions } from '@/store/auth-store'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
+import EmailConfirmationError from '@/components/auth/email-confirmation-error'
 
 const loginSchema = z.object({
   email: z.string().email('Email no válido'),
@@ -25,6 +26,7 @@ function LoginForm() {
 
   const [showPassword, setShowPassword] = useState(false)
   const [loginError, setLoginError] = useState<string | null>(null)
+  const [emailNotConfirmed, setEmailNotConfirmed] = useState<string | null>(null)
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -37,15 +39,23 @@ function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setLoginError(null)
+    setEmailNotConfirmed(null)
 
     const { error } = await signIn(data.email, data.password)
 
     if (error) {
-      setLoginError(
-        error.message === 'Invalid login credentials'
-          ? 'Email o contraseña incorrectos'
-          : 'Error al iniciar sesión. Intenta nuevamente.'
-      )
+      // Handle email not confirmed error specifically
+      if (error.code === 'email_not_confirmed') {
+        setEmailNotConfirmed(data.email)
+        return
+      }
+
+      // Handle other errors with friendly messages
+      if (error.code === 'invalid_credentials') {
+        setLoginError(error.message || 'Email o contraseña incorrectos')
+      } else {
+        setLoginError(error.user_message || error.message || 'Error al iniciar sesión. Intenta nuevamente.')
+      }
       return
     }
 
@@ -161,7 +171,16 @@ function LoginForm() {
             </Link>
           </div>
 
-          {/* Error Message */}
+          {/* Email Confirmation Error */}
+          {emailNotConfirmed && (
+            <EmailConfirmationError
+              email={emailNotConfirmed}
+              onClose={() => setEmailNotConfirmed(null)}
+              className="mb-4"
+            />
+          )}
+
+          {/* General Error Message */}
           {loginError && (
             <div className="rounded-md bg-red-50 p-4">
               <div className="text-sm text-red-700">{loginError}</div>

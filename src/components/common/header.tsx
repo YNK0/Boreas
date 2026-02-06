@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { HeaderDashboardCTA } from '@/components/common/dashboard-cta-button'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -47,6 +48,10 @@ export default function Header() {
             >
               FAQ
             </a>
+
+            {/* Smart Dashboard/Login Button */}
+            <HeaderDashboardCTA className="touch-target" />
+
             <a
               href="#contact"
               className="btn-primary touch-target"
@@ -105,6 +110,14 @@ export default function Header() {
               >
                 ❓ FAQ
               </a>
+
+              {/* Mobile Dashboard Button */}
+              <div className="px-2 pt-2">
+                <HeaderDashboardCTA
+                  className="block text-center text-lg py-4 touch-target font-semibold w-full"
+                />
+              </div>
+
               <div className="px-2 pt-2">
                 <a
                   href="#contact"

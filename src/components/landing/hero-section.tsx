@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { MessageSquare, TrendingUp, Users, CheckCircle, Clock } from 'lucide-react'
 import { TrackableCTA, SectionTracker } from '@/components/analytics/tracking-components'
 import { useCTATracking, useAnalytics } from '@/hooks/use-analytics'
+import { HeroDashboardCTA } from '@/components/common/dashboard-cta-button'
 
 // Hero section variant types for A/B testing
 export interface HeroVariant {
@@ -124,13 +125,16 @@ export default function HeroSection({ variant = defaultVariant, className = '' }
 
             {/* CTAs with analytics tracking */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8" role="group" aria-label="Call to action buttons">
+              {/* Primary CTA: Smart Dashboard Button */}
+              <HeroDashboardCTA className="w-full sm:w-auto" />
+
               <Link href="#contact" className="group">
                 <TrackableCTA
                   trackingType="hero"
                   label={variant.ctaPrimary}
                   position="primary"
                   onClick={handlePrimaryCTA}
-                  className="w-full sm:w-auto btn-primary bg-green-500 hover:bg-green-600 text-white px-8 py-4 text-lg font-semibold rounded-lg transition-all transform group-hover:scale-105 shadow-lg hover:shadow-xl min-h-[48px] flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto btn-primary bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-lg transition-all transform group-hover:scale-105 shadow-lg hover:shadow-xl min-h-[48px] flex items-center justify-center gap-2"
                   aria-label={`${variant.ctaPrimary} - Opens contact form`}
                 >
                   <MessageSquare className="w-5 h-5" aria-hidden="true" />
@@ -146,6 +150,7 @@ export default function HeroSection({ variant = defaultVariant, className = '' }
                   onClick={handleSecondaryCTA}
                   className="w-full sm:w-auto btn-secondary border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold rounded-lg transition-all min-h-[48px] flex items-center justify-center gap-2"
                   aria-label={`${variant.ctaSecondary} - View success stories`}
+
                 >
                   <TrendingUp className="w-5 h-5" aria-hidden="true" />
                   {variant.ctaSecondary}

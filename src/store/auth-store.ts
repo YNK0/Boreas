@@ -20,6 +20,7 @@ interface AuthActions {
   signUp: (email: string, password: string, name: string) => Promise<{ error: any }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: any }>
+  resendConfirmation: (email: string) => Promise<{ error: any }>
   updatePassword: (password: string) => Promise<{ error: any }>
   updateProfile: (updates: UserUpdate) => Promise<{ error: any }>
   initialize: () => Promise<void>
@@ -48,6 +49,32 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
 
       if (error) {
         set({ loading: false })
+
+        // Handle specific email confirmation error
+        if (error.message.includes('Email not confirmed') || error.message.includes('email_not_confirmed')) {
+          return {
+            error: {
+              ...error,
+              code: 'email_not_confirmed',
+              message: 'Por favor confirma tu email antes de acceder',
+              user_message: 'Revisa tu bandeja de entrada y confirma tu email para continuar.',
+              action_required: 'email_confirmation'
+            }
+          }
+        }
+
+        // Handle other auth errors with friendly messages
+        if (error.message.includes('Invalid login credentials')) {
+          return {
+            error: {
+              ...error,
+              code: 'invalid_credentials',
+              message: 'Email o contraseña incorrectos',
+              user_message: 'Verifica que tu email y contraseña sean correctos.'
+            }
+          }
+        }
+
         return { error }
       }
 
@@ -142,6 +169,42 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
       return { error }
     } catch (error) {
       return { error }
+    }
+  },
+
+  resendConfirmation: async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/confirmed`
+        }
+      })
+
+      if (error) {
+        return {
+          error: {
+            ...error,
+            message: 'No se pudo reenviar el email de confirmación',
+            user_message: 'Intenta de nuevo en unos minutos o contacta soporte.'
+          }
+        }
+      }
+
+      return {
+        error: null,
+        message: 'Email de confirmación enviado exitosamente',
+        user_message: 'Revisa tu bandeja de entrada y spam para el nuevo email de confirmación.'
+      }
+    } catch (error) {
+      return {
+        error: {
+          ...error,
+          message: 'Error inesperado al reenviar confirmación',
+          user_message: 'Algo salió mal. Por favor intenta más tarde.'
+        }
+      }
     }
   },
 
@@ -265,6 +328,7 @@ export const useAuthActions = () => {
     signUp: store.signUp,
     signOut: store.signOut,
     resetPassword: store.resetPassword,
+    resendConfirmation: store.resendConfirmation,
     updatePassword: store.updatePassword,
     updateProfile: store.updateProfile,
     initialize: store.initialize
