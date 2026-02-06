@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { BarChart3, ArrowRight } from 'lucide-react'
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '@/store/auth-store'
 import { TrackableCTA } from '@/components/analytics/tracking-components'
 import { useAnalytics } from '@/hooks/use-analytics'
 
