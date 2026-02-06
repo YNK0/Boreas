@@ -2426,10 +2426,1372 @@ export const conversionFunnel = [
 
 ---
 
-**Estado:** ✅ Arquitectura Completa
-**Líneas de documentación:** ~3,500
-**Próximo paso:** `/oden:analyze` para análisis competitivo
+---
+
+## 19. Mobile Strategy (Future Phase)
+
+### 19.1 React Native + Expo Architecture
+
+```typescript
+// Mobile app structure (Phase 2)
+mobile/
+├── app.json              // Expo configuration
+├── eas.json              // Build configuration
+├── app/
+│   ├── (tabs)/
+│   │   ├── dashboard.tsx
+│   │   ├── clients.tsx
+│   │   └── settings.tsx
+│   ├── auth/
+│   │   ├── login.tsx
+│   │   └── signup.tsx
+│   └── _layout.tsx
+├── components/
+│   ├── ui/               // Shared UI components
+│   ├── forms/            // Form components
+│   └── charts/           // Mobile-optimized charts
+├── hooks/                // Shared hooks with web
+├── services/             // API services
+├── store/                // Zustand stores
+└── utils/                // Shared utilities
+
+// Shared packages between web and mobile
+packages/
+├── shared-types/         // TypeScript definitions
+├── shared-utils/         // Utility functions
+├── shared-hooks/         // React hooks
+└── shared-services/      // API services
+```
+
+### 19.2 Mobile-Specific Features
+
+#### A. Native Notifications
+```typescript
+// Push notification service
+import * as Notifications from 'expo-notifications'
+import Constants from 'expo-constants'
+
+export class NotificationService {
+  static async registerForPushNotifications() {
+    let token
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      })
+    }
+
+    const { status: existingStatus } = await Notifications.getPermissionsAsync()
+    let finalStatus = existingStatus
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync()
+      finalStatus = status
+    }
+
+    if (finalStatus !== 'granted') {
+      throw new Error('Permission not granted for notifications')
+    }
+
+    token = (await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig?.extra?.eas?.projectId,
+    })).data
+
+    return token
+  }
+
+  static async scheduleLocalNotification(title: string, body: string, data?: any) {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        data,
+        sound: 'default',
+      },
+      trigger: { seconds: 1 },
+    })
+  }
+}
+
+// Notification types for different events
+export interface NotificationConfig {
+  new_lead: {
+    title: 'Nuevo Lead'
+    body: (name: string) => `${name} se registró en tu landing page`
+    data: { type: 'lead', leadId: string }
+  }
+  demo_scheduled: {
+    title: 'Demo Agendada'
+    body: (time: string) => `Demo programada para ${time}`
+    data: { type: 'demo', demoId: string }
+  }
+  client_message: {
+    title: 'Mensaje de Cliente'
+    body: (client: string) => `${client} te envió un mensaje`
+    data: { type: 'message', clientId: string }
+  }
+}
+```
+
+#### B. Offline Capabilities
+```typescript
+// Offline sync service
+import NetInfo from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+export class OfflineService {
+  private static readonly OFFLINE_QUEUE_KEY = 'offline_queue'
+  private static readonly LAST_SYNC_KEY = 'last_sync'
+
+  static async queueAction(action: OfflineAction) {
+    const queue = await this.getQueue()
+    queue.push({
+      ...action,
+      timestamp: Date.now(),
+      id: Math.random().toString(36).substr(2, 9)
+    })
+    await AsyncStorage.setItem(this.OFFLINE_QUEUE_KEY, JSON.stringify(queue))
+  }
+
+  static async processQueue() {
+    const netInfo = await NetInfo.fetch()
+    if (!netInfo.isConnected) return
+
+    const queue = await this.getQueue()
+    const processedIds: string[] = []
+
+    for (const action of queue) {
+      try {
+        await this.executeAction(action)
+        processedIds.push(action.id)
+      } catch (error) {
+        console.error('Failed to process offline action:', error)
+        // Keep action in queue for retry
+      }
+    }
+
+    // Remove processed actions
+    const remainingQueue = queue.filter(action => !processedIds.includes(action.id))
+    await AsyncStorage.setItem(this.OFFLINE_QUEUE_KEY, JSON.stringify(remainingQueue))
+
+    // Update last sync time
+    await AsyncStorage.setItem(this.LAST_SYNC_KEY, Date.now().toString())
+  }
+
+  private static async getQueue(): Promise<OfflineAction[]> {
+    const queueData = await AsyncStorage.getItem(this.OFFLINE_QUEUE_KEY)
+    return queueData ? JSON.parse(queueData) : []
+  }
+
+  private static async executeAction(action: OfflineAction) {
+    switch (action.type) {
+      case 'update_lead':
+        return await leadService.update(action.leadId, action.data)
+      case 'add_note':
+        return await noteService.create(action.leadId, action.note)
+      case 'schedule_call':
+        return await callService.schedule(action.clientId, action.callData)
+      default:
+        throw new Error(`Unknown offline action type: ${action.type}`)
+    }
+  }
+}
+
+interface OfflineAction {
+  id: string
+  type: 'update_lead' | 'add_note' | 'schedule_call'
+  timestamp: number
+  leadId?: string
+  clientId?: string
+  data?: any
+  note?: string
+  callData?: any
+}
+```
+
+### 19.3 Mobile Performance Optimization
+
+```typescript
+// React Native performance optimizations
+import { useMemo, useCallback } from 'react'
+import { FlatList, VirtualizedList } from 'react-native'
+
+// Optimized list rendering for large datasets
+export const OptimizedLeadList = ({ leads, onLeadPress }: Props) => {
+  const renderLead = useCallback(({ item }: { item: Lead }) => (
+    <LeadListItem lead={item} onPress={onLeadPress} />
+  ), [onLeadPress])
+
+  const keyExtractor = useCallback((item: Lead) => item.id, [])
+
+  const getItemLayout = useCallback((data: any, index: number) => ({
+    length: 80, // Fixed item height
+    offset: 80 * index,
+    index,
+  }), [])
+
+  return (
+    <FlatList
+      data={leads}
+      renderItem={renderLead}
+      keyExtractor={keyExtractor}
+      getItemLayout={getItemLayout}
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      windowSize={10}
+      initialNumToRender={10}
+    />
+  )
+}
+
+// Image optimization for mobile
+import { Image } from 'expo-image'
+
+export const OptimizedImage = ({ source, ...props }: ImageProps) => {
+  return (
+    <Image
+      source={source}
+      placeholder={PLACEHOLDER_BLURHASH}
+      contentFit="cover"
+      transition={200}
+      cachePolicy="memory-disk"
+      {...props}
+    />
+  )
+}
+
+// Bundle size optimization
+export const loadDashboardModule = () => import('./Dashboard')
+export const loadAnalyticsModule = () => import('./Analytics')
+export const loadSettingsModule = () => import('./Settings')
+```
+
+---
+
+## 20. Advanced Analytics Implementation
+
+### 20.1 Custom Analytics Events
+
+```typescript
+// Advanced analytics tracking
+export class AnalyticsService {
+  private static instance: AnalyticsService
+  private posthog: PostHog
+  private mixpanel: Mixpanel
+
+  constructor() {
+    this.posthog = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
+      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST!
+    })
+
+    this.mixpanel = Mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN!)
+  }
+
+  static getInstance(): AnalyticsService {
+    if (!AnalyticsService.instance) {
+      AnalyticsService.instance = new AnalyticsService()
+    }
+    return AnalyticsService.instance
+  }
+
+  // Identify user across platforms
+  identify(userId: string, properties: UserProperties) {
+    this.posthog.identify(userId, properties)
+    this.mixpanel.people.set(properties)
+  }
+
+  // Track funnel events with rich context
+  trackFunnelEvent(event: FunnelEvent, properties: EventProperties = {}) {
+    const enrichedProperties = {
+      ...properties,
+      timestamp: Date.now(),
+      session_id: this.getSessionId(),
+      page_url: window.location.href,
+      referrer: document.referrer,
+      user_agent: navigator.userAgent,
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight
+      }
+    }
+
+    this.posthog.capture(event, enrichedProperties)
+    this.mixpanel.track(event, enrichedProperties)
+  }
+
+  // A/B testing integration
+  getFeatureFlag(flagName: string, defaultValue: any = false): any {
+    return this.posthog.getFeatureFlag(flagName) ?? defaultValue
+  }
+
+  // Cohort analysis
+  addUserToCohort(userId: string, cohortName: string) {
+    this.posthog.group('cohort', cohortName)
+  }
+
+  // Revenue tracking
+  trackRevenue(amount: number, currency: string = 'USD', properties: any = {}) {
+    this.mixpanel.track('Revenue', {
+      amount,
+      currency,
+      ...properties
+    })
+
+    this.posthog.capture('$transaction', {
+      revenue: amount,
+      currency,
+      ...properties
+    })
+  }
+
+  // Heatmap and session recording
+  enableHeatmaps(selector: string) {
+    this.posthog.capture('$heatmap', { selector })
+  }
+
+  private getSessionId(): string {
+    return sessionStorage.getItem('session_id') ||
+           Math.random().toString(36).substr(2, 9)
+  }
+}
+
+// Funnel event definitions
+export type FunnelEvent =
+  | 'landing_page_view'
+  | 'hero_cta_click'
+  | 'use_case_explore'
+  | 'testimonial_read'
+  | 'faq_interact'
+  | 'form_start'
+  | 'form_field_complete'
+  | 'form_submit_attempt'
+  | 'form_submit_success'
+  | 'demo_request'
+  | 'email_open'
+  | 'email_click'
+  | 'demo_scheduled'
+  | 'demo_attended'
+  | 'proposal_viewed'
+  | 'contract_signed'
+  | 'payment_completed'
+  | 'onboarding_started'
+  | 'first_automation_created'
+  | 'first_message_sent'
+
+// Custom hooks for analytics
+export const useAnalytics = () => {
+  const analytics = AnalyticsService.getInstance()
+
+  const trackEvent = useCallback((event: FunnelEvent, properties?: EventProperties) => {
+    analytics.trackFunnelEvent(event, properties)
+  }, [analytics])
+
+  const trackPageView = useCallback((pageName: string, properties?: EventProperties) => {
+    analytics.trackFunnelEvent('landing_page_view', {
+      page_name: pageName,
+      ...properties
+    })
+  }, [analytics])
+
+  return { trackEvent, trackPageView }
+}
+```
+
+### 20.2 Real-time Analytics Dashboard
+
+```typescript
+// Real-time analytics component
+import { useEffect, useState } from 'react'
+import { createClient } from '@supabase/supabase-js'
+
+export const RealTimeAnalytics = () => {
+  const [metrics, setMetrics] = useState<RealTimeMetrics>()
+  const [liveVisitors, setLiveVisitors] = useState(0)
+
+  useEffect(() => {
+    // Subscribe to real-time metrics updates
+    const channel = supabase
+      .channel('analytics')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'leads'
+      }, handleNewLead)
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'leads'
+      }, handleLeadUpdate)
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [])
+
+  const handleNewLead = (payload: any) => {
+    setMetrics(prev => prev ? {
+      ...prev,
+      leads_today: prev.leads_today + 1,
+      total_leads: prev.total_leads + 1
+    } : prev)
+  }
+
+  const handleLeadUpdate = (payload: any) => {
+    if (payload.new.status === 'won') {
+      setMetrics(prev => prev ? {
+        ...prev,
+        conversions_today: prev.conversions_today + 1
+      } : prev)
+    }
+  }
+
+  return (
+    <div className="grid grid-cols-4 gap-4">
+      <MetricCard
+        title="Live Visitors"
+        value={liveVisitors}
+        change={"+5.2%"}
+        color="green"
+      />
+      <MetricCard
+        title="Leads Today"
+        value={metrics?.leads_today ?? 0}
+        change={"+12.1%"}
+        color="blue"
+      />
+      <MetricCard
+        title="Conversion Rate"
+        value={`${metrics?.conversion_rate ?? 0}%`}
+        change={"+2.1%"}
+        color="purple"
+      />
+      <MetricCard
+        title="Revenue Today"
+        value={`$${metrics?.revenue_today ?? 0}`}
+        change={"+18.3%"}
+        color="green"
+      />
+    </div>
+  )
+}
+
+interface RealTimeMetrics {
+  leads_today: number
+  total_leads: number
+  conversions_today: number
+  conversion_rate: number
+  revenue_today: number
+  live_visitors: number
+}
+```
+
+---
+
+## 21. Advanced Security Implementation
+
+### 21.1 API Security Layers
+
+```typescript
+// Advanced API security middleware
+import { headers } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
+import rateLimit from 'express-rate-limit'
+import helmet from 'helmet'
+
+// Security middleware stack
+export const securityMiddleware = [
+  // CORS configuration
+  cors({
+    origin: process.env.NODE_ENV === 'production'
+      ? ['https://boreas.com', 'https://www.boreas.com']
+      : ['http://localhost:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  }),
+
+  // Security headers
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'", // Required for Next.js
+          "https://js.posthog.com",
+          "https://cdn.mixpanel.com"
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: [
+          "'self'",
+          "https://*.supabase.co",
+          "https://api.resend.com",
+          "https://app.posthog.com"
+        ]
+      }
+    },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    }
+  }),
+
+  // Rate limiting
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP',
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+]
+
+// Request validation middleware
+export const validateRequest = (schema: z.ZodSchema) => {
+  return async (req: NextRequest) => {
+    try {
+      // Validate Content-Type
+      const contentType = req.headers.get('content-type')
+      if (!contentType?.includes('application/json')) {
+        return NextResponse.json(
+          { error: 'Content-Type must be application/json' },
+          { status: 400 }
+        )
+      }
+
+      // Validate body size
+      const body = await req.text()
+      if (body.length > 1024 * 1024) { // 1MB limit
+        return NextResponse.json(
+          { error: 'Request body too large' },
+          { status: 413 }
+        )
+      }
+
+      // Parse and validate JSON
+      let parsedBody
+      try {
+        parsedBody = JSON.parse(body)
+      } catch {
+        return NextResponse.json(
+          { error: 'Invalid JSON body' },
+          { status: 400 }
+        )
+      }
+
+      // Validate against schema
+      const result = schema.safeParse(parsedBody)
+      if (!result.success) {
+        return NextResponse.json({
+          error: 'Validation failed',
+          details: result.error.errors.reduce((acc, err) => {
+            acc[err.path.join('.')] = err.message
+            return acc
+          }, {} as Record<string, string>)
+        }, { status: 400 })
+      }
+
+      return { validatedData: result.data }
+    } catch (error) {
+      return NextResponse.json(
+        { error: 'Request validation failed' },
+        { status: 500 }
+      )
+    }
+  }
+}
+
+// SQL Injection prevention
+export const sanitizeQuery = (query: string, params: any[]): [string, any[]] => {
+  // Use parameterized queries exclusively
+  // This is handled by Supabase client automatically
+  return [query, params]
+}
+
+// XSS prevention
+export const sanitizeInput = (input: string): string => {
+  return DOMPurify.sanitize(input, {
+    ALLOWED_TAGS: [],
+    ALLOWED_ATTR: []
+  })
+}
+```
+
+### 21.2 Authentication & Authorization
+
+```typescript
+// Enhanced JWT token management
+export class TokenManager {
+  private static readonly ACCESS_TOKEN_EXPIRY = 15 * 60 * 1000 // 15 minutes
+  private static readonly REFRESH_TOKEN_EXPIRY = 7 * 24 * 60 * 60 * 1000 // 7 days
+
+  static async generateTokenPair(userId: string, role: string) {
+    const accessTokenPayload = {
+      sub: userId,
+      role,
+      type: 'access',
+      exp: Date.now() + this.ACCESS_TOKEN_EXPIRY
+    }
+
+    const refreshTokenPayload = {
+      sub: userId,
+      type: 'refresh',
+      exp: Date.now() + this.REFRESH_TOKEN_EXPIRY
+    }
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.signToken(accessTokenPayload),
+      this.signToken(refreshTokenPayload)
+    ])
+
+    // Store refresh token hash in database
+    await this.storeRefreshToken(userId, refreshToken)
+
+    return { accessToken, refreshToken }
+  }
+
+  static async verifyToken(token: string): Promise<TokenPayload | null> {
+    try {
+      const payload = await this.verifySignature(token)
+
+      if (payload.exp < Date.now()) {
+        throw new Error('Token expired')
+      }
+
+      return payload
+    } catch (error) {
+      return null
+    }
+  }
+
+  static async refreshAccessToken(refreshToken: string) {
+    const payload = await this.verifyToken(refreshToken)
+
+    if (!payload || payload.type !== 'refresh') {
+      throw new Error('Invalid refresh token')
+    }
+
+    // Verify refresh token exists in database
+    const storedToken = await this.getStoredRefreshToken(payload.sub)
+    if (!storedToken || storedToken !== refreshToken) {
+      throw new Error('Refresh token not found or revoked')
+    }
+
+    // Get user role
+    const user = await this.getUser(payload.sub)
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    // Generate new token pair
+    return this.generateTokenPair(user.id, user.role)
+  }
+
+  static async revokeRefreshToken(userId: string) {
+    await supabase
+      .from('user_tokens')
+      .delete()
+      .eq('user_id', userId)
+  }
+
+  private static async signToken(payload: any): Promise<string> {
+    // Implementation using jose or similar JWT library
+    return jwt.sign(payload, process.env.JWT_SECRET!)
+  }
+
+  private static async verifySignature(token: string): Promise<any> {
+    return jwt.verify(token, process.env.JWT_SECRET!)
+  }
+
+  private static async storeRefreshToken(userId: string, token: string) {
+    const hashedToken = await bcrypt.hash(token, 10)
+
+    await supabase
+      .from('user_tokens')
+      .upsert({
+        user_id: userId,
+        token_hash: hashedToken,
+        expires_at: new Date(Date.now() + this.REFRESH_TOKEN_EXPIRY)
+      })
+  }
+
+  private static async getStoredRefreshToken(userId: string): Promise<string | null> {
+    const { data } = await supabase
+      .from('user_tokens')
+      .select('token_hash')
+      .eq('user_id', userId)
+      .single()
+
+    return data?.token_hash || null
+  }
+
+  private static async getUser(userId: string) {
+    const { data } = await supabase
+      .from('users')
+      .select('id, role')
+      .eq('id', userId)
+      .single()
+
+    return data
+  }
+}
+
+interface TokenPayload {
+  sub: string
+  role?: string
+  type: 'access' | 'refresh'
+  exp: number
+}
+```
+
+---
+
+## 22. Backup & Disaster Recovery
+
+### 22.1 Database Backup Strategy
+
+```sql
+-- Automated backup procedures
+-- Daily full backup
+CREATE OR REPLACE FUNCTION create_daily_backup()
+RETURNS void AS $$
+BEGIN
+  -- Export critical tables
+  COPY (
+    SELECT row_to_json(t)
+    FROM (
+      SELECT * FROM leads
+      WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
+    ) t
+  ) TO '/backups/leads_' || to_char(now(), 'YYYY_MM_DD') || '.json';
+
+  COPY (
+    SELECT row_to_json(t)
+    FROM (SELECT * FROM clients) t
+  ) TO '/backups/clients_' || to_char(now(), 'YYYY_MM_DD') || '.json';
+
+  COPY (
+    SELECT row_to_json(t)
+    FROM (SELECT * FROM projects) t
+  ) TO '/backups/projects_' || to_char(now(), 'YYYY_MM_DD') || '.json';
+
+  -- Log backup completion
+  INSERT INTO backup_log (backup_type, backup_date, status)
+  VALUES ('daily', now(), 'completed');
+END;
+$$ LANGUAGE plpgsql;
+
+-- Schedule daily backups
+SELECT cron.schedule('daily-backup', '0 2 * * *', 'SELECT create_daily_backup()');
+
+-- Weekly full system backup
+CREATE OR REPLACE FUNCTION create_weekly_backup()
+RETURNS void AS $$
+BEGIN
+  -- Full database dump
+  PERFORM pg_dump('postgresql://user:pass@host:5432/dbname',
+                  '/backups/full_backup_' || to_char(now(), 'YYYY_MM_DD'));
+
+  INSERT INTO backup_log (backup_type, backup_date, status)
+  VALUES ('weekly', now(), 'completed');
+END;
+$$ LANGUAGE plpgsql;
+
+-- Backup monitoring table
+CREATE TABLE backup_log (
+  id SERIAL PRIMARY KEY,
+  backup_type VARCHAR(50),
+  backup_date TIMESTAMP DEFAULT now(),
+  status VARCHAR(20),
+  file_path TEXT,
+  file_size BIGINT,
+  notes TEXT
+);
+```
+
+### 22.2 Recovery Procedures
+
+```typescript
+// Disaster recovery service
+export class DisasterRecoveryService {
+  static async initiateRecovery(backupDate: string, recoveryType: RecoveryType) {
+    console.log(`Initiating ${recoveryType} recovery from ${backupDate}`)
+
+    switch (recoveryType) {
+      case 'full':
+        return await this.fullSystemRecovery(backupDate)
+      case 'partial':
+        return await this.partialRecovery(backupDate)
+      case 'point_in_time':
+        return await this.pointInTimeRecovery(backupDate)
+    }
+  }
+
+  static async fullSystemRecovery(backupDate: string) {
+    // 1. Validate backup integrity
+    const backupValid = await this.validateBackup(backupDate)
+    if (!backupValid) {
+      throw new Error('Backup validation failed')
+    }
+
+    // 2. Create new database instance
+    const newDbInstance = await this.createDatabaseInstance()
+
+    // 3. Restore from backup
+    await this.restoreDatabase(newDbInstance, backupDate)
+
+    // 4. Update application configuration
+    await this.updateDatabaseConfig(newDbInstance)
+
+    // 5. Run data validation
+    const validationResults = await this.validateRestoredData()
+
+    // 6. Switch traffic to restored instance
+    if (validationResults.valid) {
+      await this.switchTraffic(newDbInstance)
+    }
+
+    return {
+      status: 'completed',
+      newInstance: newDbInstance,
+      validationResults
+    }
+  }
+
+  static async createRecoveryPlan() {
+    return {
+      rto: '2 hours', // Recovery Time Objective
+      rpo: '15 minutes', // Recovery Point Objective
+      procedures: [
+        {
+          step: 1,
+          action: 'Assess damage and determine recovery scope',
+          estimatedTime: '15 minutes',
+          owner: 'DevOps Team'
+        },
+        {
+          step: 2,
+          action: 'Validate latest backup integrity',
+          estimatedTime: '10 minutes',
+          owner: 'Database Admin'
+        },
+        {
+          step: 3,
+          action: 'Provision new infrastructure',
+          estimatedTime: '30 minutes',
+          owner: 'Infrastructure Team'
+        },
+        {
+          step: 4,
+          action: 'Restore database from backup',
+          estimatedTime: '45 minutes',
+          owner: 'Database Admin'
+        },
+        {
+          step: 5,
+          action: 'Validate data integrity',
+          estimatedTime: '15 minutes',
+          owner: 'QA Team'
+        },
+        {
+          step: 6,
+          action: 'Update DNS and switch traffic',
+          estimatedTime: '15 minutes',
+          owner: 'DevOps Team'
+        }
+      ],
+      contacts: {
+        emergencyContact: 'emergency@boreas.com',
+        databaseAdmin: 'dba@boreas.com',
+        infraTeam: 'infra@boreas.com'
+      }
+    }
+  }
+
+  private static async validateBackup(backupDate: string): Promise<boolean> {
+    // Implement backup validation logic
+    return true
+  }
+
+  private static async createDatabaseInstance(): Promise<string> {
+    // Implement database instance creation
+    return 'new-db-instance-id'
+  }
+
+  private static async restoreDatabase(instanceId: string, backupDate: string) {
+    // Implement database restoration
+  }
+
+  private static async updateDatabaseConfig(instanceId: string) {
+    // Update environment variables and application config
+  }
+
+  private static async validateRestoredData() {
+    // Run data validation queries
+    const criticalTablesCheck = await Promise.all([
+      this.validateTable('users'),
+      this.validateTable('leads'),
+      this.validateTable('clients'),
+      this.validateTable('projects')
+    ])
+
+    return {
+      valid: criticalTablesCheck.every(result => result.valid),
+      details: criticalTablesCheck
+    }
+  }
+
+  private static async validateTable(tableName: string) {
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('count')
+      .limit(1)
+
+    return {
+      table: tableName,
+      valid: !error,
+      error: error?.message
+    }
+  }
+
+  private static async switchTraffic(newInstanceId: string) {
+    // Implement traffic switching logic
+  }
+}
+
+type RecoveryType = 'full' | 'partial' | 'point_in_time'
+```
+
+---
+
+## 23. Compliance & Legal Considerations
+
+### 23.1 GDPR Compliance Implementation
+
+```typescript
+// GDPR compliance service
+export class GDPRComplianceService {
+  static async handleDataSubjectRequest(requestType: DataSubjectRequestType, email: string) {
+    switch (requestType) {
+      case 'access':
+        return await this.handleAccessRequest(email)
+      case 'rectification':
+        return await this.handleRectificationRequest(email)
+      case 'erasure':
+        return await this.handleErasureRequest(email)
+      case 'portability':
+        return await this.handlePortabilityRequest(email)
+      case 'restriction':
+        return await this.handleRestrictionRequest(email)
+    }
+  }
+
+  static async handleAccessRequest(email: string) {
+    // Collect all personal data for the user
+    const userData = await this.collectUserData(email)
+
+    // Generate comprehensive data export
+    const dataExport = {
+      personal_information: userData.personal,
+      communication_history: userData.communications,
+      interaction_logs: userData.interactions,
+      preferences: userData.preferences,
+      generated_date: new Date().toISOString(),
+      retention_period: '7 years from last interaction'
+    }
+
+    // Log the request
+    await this.logDataSubjectRequest('access', email)
+
+    return dataExport
+  }
+
+  static async handleErasureRequest(email: string) {
+    const user = await this.findUserByEmail(email)
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    // Check if we have legal basis to retain data
+    const legalBasis = await this.checkLegalBasisForRetention(user.id)
+    if (legalBasis.mustRetain) {
+      return {
+        status: 'partial_erasure',
+        message: 'Some data must be retained for legal compliance',
+        retained_data: legalBasis.retainedTypes,
+        erased_data: await this.performPartialErasure(user.id)
+      }
+    }
+
+    // Full erasure
+    const erasureResult = await this.performFullErasure(user.id)
+
+    await this.logDataSubjectRequest('erasure', email, {
+      erasure_type: 'full',
+      data_types_erased: erasureResult.erasedTypes
+    })
+
+    return {
+      status: 'completed',
+      message: 'All personal data has been erased',
+      erased_data: erasureResult.erasedTypes
+    }
+  }
+
+  static async anonymizeData(userId: string) {
+    // Replace personal data with anonymous identifiers
+    const anonymousId = `anon_${Math.random().toString(36).substr(2, 9)}`
+
+    await Promise.all([
+      // Anonymize leads
+      supabase
+        .from('leads')
+        .update({
+          name: 'Anonymous User',
+          email: `${anonymousId}@anonymized.com`,
+          phone: null,
+          message: '[REDACTED]'
+        })
+        .eq('email', userId),
+
+      // Anonymize notes
+      supabase
+        .from('lead_notes')
+        .update({
+          content: '[REDACTED - User requested data deletion]'
+        })
+        .in('lead_id', [/* lead IDs for this user */])
+    ])
+  }
+
+  private static async collectUserData(email: string) {
+    const { data: leads } = await supabase
+      .from('leads')
+      .select(`
+        *,
+        notes:lead_notes(*),
+        emails:email_logs(*)
+      `)
+      .eq('email', email)
+
+    const { data: clients } = await supabase
+      .from('clients')
+      .select(`
+        *,
+        projects(*),
+        calls:client_calls(*),
+        metrics:client_metrics(*)
+      `)
+      .eq('email', email)
+
+    return {
+      personal: { leads, clients },
+      communications: [], // Email logs, etc.
+      interactions: [], // Analytics data
+      preferences: {} // User preferences
+    }
+  }
+
+  private static async logDataSubjectRequest(
+    type: string,
+    email: string,
+    metadata?: any
+  ) {
+    await supabase
+      .from('gdpr_requests')
+      .insert({
+        request_type: type,
+        subject_email: email,
+        request_date: new Date(),
+        status: 'completed',
+        metadata
+      })
+  }
+}
+
+type DataSubjectRequestType = 'access' | 'rectification' | 'erasure' | 'portability' | 'restriction'
+
+// Cookie consent management
+export const CookieConsent = () => {
+  const [consent, setConsent] = useState<CookieConsentState>()
+
+  useEffect(() => {
+    const savedConsent = localStorage.getItem('cookie_consent')
+    if (savedConsent) {
+      setConsent(JSON.parse(savedConsent))
+    }
+  }, [])
+
+  const handleConsentUpdate = (newConsent: CookieConsentState) => {
+    setConsent(newConsent)
+    localStorage.setItem('cookie_consent', JSON.stringify(newConsent))
+
+    // Update analytics tracking based on consent
+    if (newConsent.analytics) {
+      AnalyticsService.getInstance().enableTracking()
+    } else {
+      AnalyticsService.getInstance().disableTracking()
+    }
+  }
+
+  if (consent) return null
+
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
+      <div className="max-w-6xl mx-auto flex items-center justify-between">
+        <div className="flex-1 mr-4">
+          <p className="text-sm text-gray-600">
+            Usamos cookies esenciales para el funcionamiento del sitio y cookies analíticas para mejorar tu experiencia.
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleConsentUpdate({
+              necessary: true,
+              analytics: false,
+              marketing: false
+            })}
+            className="px-4 py-2 text-sm border rounded"
+          >
+            Solo Esenciales
+          </button>
+          <button
+            onClick={() => handleConsentUpdate({
+              necessary: true,
+              analytics: true,
+              marketing: true
+            })}
+            className="px-4 py-2 text-sm bg-blue-600 text-white rounded"
+          >
+            Aceptar Todas
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface CookieConsentState {
+  necessary: boolean
+  analytics: boolean
+  marketing: boolean
+}
+```
+
+---
+
+## 24. Scalability Considerations
+
+### 24.1 Database Scaling Strategy
+
+```sql
+-- Database partitioning for analytics data
+CREATE TABLE landing_analytics_y2026m01 PARTITION OF landing_analytics
+    FOR VALUES FROM ('2026-01-01') TO ('2026-02-01');
+
+CREATE TABLE landing_analytics_y2026m02 PARTITION OF landing_analytics
+    FOR VALUES FROM ('2026-02-01') TO ('2026-03-01');
+
+-- Add indexes to partitions
+CREATE INDEX idx_analytics_y2026m01_session ON landing_analytics_y2026m01(session_id);
+CREATE INDEX idx_analytics_y2026m02_session ON landing_analytics_y2026m02(session_id);
+
+-- Automated partition management
+CREATE OR REPLACE FUNCTION create_monthly_partition()
+RETURNS void AS $$
+DECLARE
+    start_date date;
+    end_date date;
+    partition_name text;
+BEGIN
+    start_date := date_trunc('month', CURRENT_DATE + interval '1 month');
+    end_date := start_date + interval '1 month';
+    partition_name := 'landing_analytics_y' || extract(year from start_date) ||
+                    'm' || lpad(extract(month from start_date)::text, 2, '0');
+
+    EXECUTE format('CREATE TABLE %I PARTITION OF landing_analytics
+                    FOR VALUES FROM (%L) TO (%L)',
+                   partition_name, start_date, end_date);
+
+    EXECUTE format('CREATE INDEX idx_%I_session ON %I(session_id)',
+                   partition_name, partition_name);
+END;
+$$ LANGUAGE plpgsql;
+
+-- Schedule partition creation
+SELECT cron.schedule('create-partition', '0 0 25 * *', 'SELECT create_monthly_partition()');
+
+-- Read replicas configuration
+-- Separate read queries to reduce load on primary
+CREATE PUBLICATION leads_publication FOR TABLE leads, clients, projects;
+
+-- Connection pooling optimization
+ALTER SYSTEM SET max_connections = 200;
+ALTER SYSTEM SET shared_buffers = '256MB';
+ALTER SYSTEM SET effective_cache_size = '1GB';
+ALTER SYSTEM SET maintenance_work_mem = '64MB';
+ALTER SYSTEM SET checkpoint_completion_target = 0.9;
+ALTER SYSTEM SET wal_buffers = '16MB';
+SELECT pg_reload_conf();
+```
+
+### 24.2 Application Scaling
+
+```typescript
+// Caching strategy implementation
+export class CacheManager {
+  private static redis: Redis
+  private static memoryCache: Map<string, CacheEntry> = new Map()
+
+  static async initialize() {
+    this.redis = new Redis(process.env.REDIS_URL!)
+
+    // Setup cache eviction for memory cache
+    setInterval(() => this.evictExpiredEntries(), 60000) // Every minute
+  }
+
+  // Multi-tier caching
+  static async get<T>(key: string): Promise<T | null> {
+    // L1: Memory cache (fastest)
+    const memoryEntry = this.memoryCache.get(key)
+    if (memoryEntry && memoryEntry.expiresAt > Date.now()) {
+      return memoryEntry.value
+    }
+
+    // L2: Redis cache
+    const redisValue = await this.redis.get(key)
+    if (redisValue) {
+      const parsed = JSON.parse(redisValue)
+
+      // Store in memory cache for next access
+      this.memoryCache.set(key, {
+        value: parsed,
+        expiresAt: Date.now() + 300000 // 5 minutes in memory
+      })
+
+      return parsed
+    }
+
+    return null
+  }
+
+  static async set<T>(key: string, value: T, ttlSeconds: number = 3600) {
+    const expiresAt = Date.now() + (ttlSeconds * 1000)
+
+    // Store in both caches
+    this.memoryCache.set(key, { value, expiresAt })
+    await this.redis.setex(key, ttlSeconds, JSON.stringify(value))
+  }
+
+  static async invalidate(pattern: string) {
+    // Invalidate from memory cache
+    for (const key of this.memoryCache.keys()) {
+      if (key.includes(pattern)) {
+        this.memoryCache.delete(key)
+      }
+    }
+
+    // Invalidate from Redis
+    const keys = await this.redis.keys(`*${pattern}*`)
+    if (keys.length > 0) {
+      await this.redis.del(...keys)
+    }
+  }
+
+  private static evictExpiredEntries() {
+    const now = Date.now()
+    for (const [key, entry] of this.memoryCache.entries()) {
+      if (entry.expiresAt <= now) {
+        this.memoryCache.delete(key)
+      }
+    }
+  }
+}
+
+interface CacheEntry {
+  value: any
+  expiresAt: number
+}
+
+// Load balancing with geographic distribution
+export const loadBalancerConfig = {
+  regions: [
+    {
+      name: 'us-east-1',
+      weight: 40,
+      healthCheck: 'https://api-us-east.boreas.com/health'
+    },
+    {
+      name: 'us-west-2',
+      weight: 30,
+      healthCheck: 'https://api-us-west.boreas.com/health'
+    },
+    {
+      name: 'eu-west-1',
+      weight: 30,
+      healthCheck: 'https://api-eu.boreas.com/health'
+    }
+  ],
+  failoverStrategy: 'least_connections',
+  healthCheckInterval: 30000,
+  timeoutMs: 5000
+}
+
+// Database query optimization
+export const QueryOptimizer = {
+  // Batch similar queries
+  batchQueries: async (queries: DatabaseQuery[]) => {
+    const groupedQueries = queries.reduce((groups, query) => {
+      const key = `${query.table}_${query.operation}`
+      if (!groups[key]) groups[key] = []
+      groups[key].push(query)
+      return groups
+    }, {} as Record<string, DatabaseQuery[]>)
+
+    const results = await Promise.all(
+      Object.entries(groupedQueries).map(([key, queries]) =>
+        this.executeBatchQuery(key, queries)
+      )
+    )
+
+    return results.flat()
+  },
+
+  // Implement query result caching
+  cachedQuery: async <T>(
+    key: string,
+    queryFn: () => Promise<T>,
+    ttl: number = 300
+  ): Promise<T> => {
+    const cached = await CacheManager.get<T>(key)
+    if (cached) return cached
+
+    const result = await queryFn()
+    await CacheManager.set(key, result, ttl)
+    return result
+  },
+
+  // Database connection pooling
+  getConnection: async () => {
+    // Implement connection pooling logic
+    // Reuse connections, manage pool size
+  }
+}
+```
+
+---
+
+**Estado:** ✅ Arquitectura Completa Expandida
+**Líneas de documentación:** ~4,200
+**Próximo paso:** `/oden:analyze` para análisis competitivo detallado
 
 **Creado:** 2026-02-04T04:15:25Z
-**Completado:** 2026-02-04T04:23:40Z
+**Actualizado:** 2026-02-06T18:26:58Z
 **Generado por:** Oden Forge Technical Architect

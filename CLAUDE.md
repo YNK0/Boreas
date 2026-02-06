@@ -24,11 +24,12 @@ Servicio B2B de automatización de procesos de contacto con clientes para peque�
 
 ### ✅ Completed
 - Estructura de proyecto inicializada
-- Decisiones técnicas definidas
+- Decisiones técnicas definidas (3,796 líneas)
 - Stack tecnológico seleccionado
+- Arquitectura técnica completa
 
 ### 🔄 In Progress
-- Arquitectura detallada (próximo: `/oden:architect`)
+- Próximo: Análisis competitivo (`/oden:analyze`)
 
 ### ⏳ Pending
 - Análisis competitivo (`/oden:analyze`)
