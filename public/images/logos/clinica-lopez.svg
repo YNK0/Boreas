@@ -1,0 +1,31 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="clinicaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60A5FA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="55" fill="url(#clinicaGradient)" stroke="white" stroke-width="3"/>
+
+  <!-- Medical cross -->
+  <g fill="white">
+    <rect x="52" y="35" width="16" height="50" rx="2" fill="white"/>
+    <rect x="35" y="52" width="50" height="16" rx="2" fill="white"/>
+
+    <!-- Inner cross detail -->
+    <rect x="56" y="39" width="8" height="42" rx="1" fill="#3B82F6" opacity="0.3"/>
+    <rect x="39" y="56" width="42" height="8" rx="1" fill="#3B82F6" opacity="0.3"/>
+  </g>
+
+  <!-- Stethoscope accent -->
+  <g fill="none" stroke="white" stroke-width="2" opacity="0.7">
+    <path d="M25 35 Q30 30, 35 35 L45 35"/>
+    <circle cx="22" cy="38" r="3" fill="white" opacity="0.7"/>
+  </g>
+
+  <!-- Company name -->
+  <text x="60" y="100" text-anchor="middle" font-family="Arial, serif" font-size="11" font-weight="bold" fill="white">CLÍNICA</text>
+  <text x="60" y="115" text-anchor="middle" font-family="Arial, serif" font-size="11" font-weight="bold" fill="white">LÓPEZ</text>
+</svg>

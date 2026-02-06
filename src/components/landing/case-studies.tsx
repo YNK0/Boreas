@@ -1,9 +1,12 @@
+import { OptimizedLogo } from '@/components/ui/optimized-image'
+
 export default function CaseStudiesSection() {
   const caseStudies = [
     {
       id: 'salon-carmen',
       industry: 'salon',
       icon: '💄',
+      logo: '/images/logos/salon-carmen.svg',
       company: 'Salón Carmen',
       type: 'Salón de belleza',
       results: [
@@ -18,6 +21,7 @@ export default function CaseStudiesSection() {
       id: 'restaurante-miguel',
       industry: 'restaurant',
       icon: '🍕',
+      logo: '/images/logos/pizzeria-miguel.svg',
       company: 'Pizzería Miguel',
       type: 'Restaurante familiar',
       results: [
@@ -32,6 +36,7 @@ export default function CaseStudiesSection() {
       id: 'clinica-lopez',
       industry: 'clinic',
       icon: '⚕️',
+      logo: '/images/logos/clinica-lopez.svg',
       company: 'Clínica López',
       type: 'Clínica médica',
       results: [
@@ -77,7 +82,14 @@ export default function CaseStudiesSection() {
             >
               {/* Header */}
               <div className="text-center mb-6">
-                <div className="text-4xl mb-3">{study.icon}</div>
+                <div className="mb-3 flex justify-center">
+                  <OptimizedLogo
+                    src={study.logo}
+                    company={study.company}
+                    size="md"
+                    className="w-16 h-16"
+                  />
+                </div>
                 <h3 className="text-xl font-bold text-gray-900">{study.company}</h3>
                 <p className="text-gray-600">{study.type}</p>
               </div>

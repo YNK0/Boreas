@@ -1,0 +1,36 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pizzeriaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FB923C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="55" fill="url(#pizzeriaGradient)" stroke="white" stroke-width="3"/>
+
+  <!-- Pizza elements -->
+  <g fill="white">
+    <!-- Pizza base circle -->
+    <circle cx="60" cy="50" r="25" fill="white" opacity="0.9"/>
+
+    <!-- Pizza slice -->
+    <path d="M60 25 L85 50 L60 50 Z" fill="#F97316" opacity="0.8"/>
+
+    <!-- Toppings -->
+    <circle cx="55" cy="45" r="3" fill="#DC2626" opacity="0.9"/>
+    <circle cx="70" cy="40" r="2.5" fill="#16A34A" opacity="0.9"/>
+    <circle cx="65" cy="50" r="2" fill="#DC2626" opacity="0.9"/>
+    <circle cx="50" cy="35" r="2.5" fill="#16A34A" opacity="0.9"/>
+
+    <!-- Chef hat -->
+    <g transform="translate(50, 15)">
+      <ellipse cx="10" cy="0" rx="12" ry="6" fill="white" opacity="0.9"/>
+      <rect x="4" y="-5" width="12" height="4" rx="2" fill="white" opacity="0.9"/>
+    </g>
+  </g>
+
+  <!-- Company name -->
+  <text x="60" y="90" text-anchor="middle" font-family="Arial, serif" font-size="11" font-weight="bold" fill="white">PIZZERÍA</text>
+  <text x="60" y="105" text-anchor="middle" font-family="Arial, serif" font-size="11" font-weight="bold" fill="white">MIGUEL</text>
+</svg>

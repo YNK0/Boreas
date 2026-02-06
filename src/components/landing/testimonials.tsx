@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { OptimizedAvatar } from '@/components/ui/optimized-image'
 
 export default function TestimonialsSection() {
   const carouselRef = useRef<HTMLDivElement>(null)
@@ -35,6 +36,7 @@ export default function TestimonialsSection() {
       industry: "Salón de belleza",
       quote: "Boreas transformó completamente mi negocio. Antes pasaba horas respondiendo WhatsApp, ahora el bot lo hace por mí las 24 horas. Mis citas aumentaron 40% en solo 2 meses.",
       avatar: "CR",
+      avatarSrc: "/images/avatars/carmen-rodriguez.svg",
       rating: 5,
       result: "40% más citas"
     },
@@ -45,6 +47,7 @@ export default function TestimonialsSection() {
       industry: "Restaurante",
       quote: "Increíble cómo algo tan simple puede cambiar tanto. Ya no pierdo reservas porque no puedo contestar el teléfono. El sistema de Boreas es una maravilla.",
       avatar: "MH",
+      avatarSrc: "/images/avatars/miguel-hernandez.svg",
       rating: 5,
       result: "60% más reservas"
     },
@@ -55,6 +58,7 @@ export default function TestimonialsSection() {
       industry: "Clínica médica",
       quote: "Los recordatorios automáticos redujeron nuestras citas perdidas de 25% a solo 8%. Nuestros pacientes están más organizados y nosotros más eficientes.",
       avatar: "PL",
+      avatarSrc: "/images/avatars/patricia-lopez.svg",
       rating: 5,
       result: "68% menos no-shows"
     },
@@ -65,6 +69,7 @@ export default function TestimonialsSection() {
       industry: "Salón de uñas",
       quote: "Como trabajo sola, no podía estar contestando WhatsApp todo el día. Boreas me permite enfocarme en mis clientes mientras el bot agenda las nuevas citas.",
       avatar: "AG",
+      avatarSrc: "/images/avatars/ana-garcia.svg",
       rating: 5,
       result: "3x más tiempo libre"
     },
@@ -75,6 +80,7 @@ export default function TestimonialsSection() {
       industry: "Gimnasio",
       quote: "El seguimiento automático de prospectos es genial. Muchas personas que antes se perdían ahora se convierten en miembros gracias a los mensajes de seguimiento.",
       avatar: "RS",
+      avatarSrc: "/images/avatars/roberto-silva.svg",
       rating: 5,
       result: "50% más conversiones"
     },
@@ -116,8 +122,14 @@ export default function TestimonialsSection() {
         {/* Featured testimonial */}
         <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
-              {testimonials[0].avatar}
+            <div className="mx-auto mb-6">
+              <OptimizedAvatar
+                src={testimonials[0].avatarSrc}
+                name={testimonials[0].name}
+                size="xl"
+                fallbackText={testimonials[0].avatar}
+                className="mx-auto"
+              />
             </div>
             <blockquote className="text-xl md:text-2xl text-gray-700 mb-6 italic">
               "{testimonials[0].quote}"
@@ -167,8 +179,13 @@ export default function TestimonialsSection() {
               </blockquote>
 
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4">
-                  {testimonial.avatar}
+                <div className="mr-4">
+                  <OptimizedAvatar
+                    src={testimonial.avatarSrc}
+                    name={testimonial.name}
+                    size="md"
+                    fallbackText={testimonial.avatar}
+                  />
                 </div>
                 <div>
                   <cite className="not-italic font-semibold text-gray-900">
@@ -207,8 +224,13 @@ export default function TestimonialsSection() {
               </blockquote>
 
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 flex-shrink-0">
-                  {testimonial.avatar}
+                <div className="mr-4 flex-shrink-0">
+                  <OptimizedAvatar
+                    src={testimonial.avatarSrc}
+                    name={testimonial.name}
+                    size="md"
+                    fallbackText={testimonial.avatar}
+                  />
                 </div>
                 <div className="min-w-0">
                   <cite className="not-italic font-semibold text-gray-900 text-sm">

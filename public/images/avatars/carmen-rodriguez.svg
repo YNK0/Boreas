@@ -1,0 +1,29 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="carmenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F472B6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="100" fill="url(#carmenGradient)"/>
+
+  <!-- Hair styling icon (for salon owner) -->
+  <g fill="white" fill-opacity="0.9">
+    <!-- Head -->
+    <circle cx="100" cy="80" r="22"/>
+    <!-- Hair/styling elements -->
+    <path d="M78 65 Q85 55, 100 58 Q115 55, 122 65" stroke="white" stroke-width="3" fill="none"/>
+    <circle cx="85" cy="70" r="3"/>
+    <circle cx="115" cy="70" r="3"/>
+    <!-- Body -->
+    <path d="M100 115 C88 115, 75 120, 68 132 L68 170 L132 170 L132 132 C125 120, 112 115, 100 115 Z"/>
+    <!-- Salon tools -->
+    <rect x="95" y="140" width="2" height="15" rx="1" fill="white" opacity="0.8"/>
+    <circle cx="96" cy="135" r="3" fill="white" opacity="0.8"/>
+  </g>
+
+  <!-- Initials -->
+  <text x="100" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" opacity="0.7">CR</text>
+</svg>

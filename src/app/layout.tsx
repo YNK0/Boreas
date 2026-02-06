@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 import AuthProvider from "@/components/auth/auth-provider";
 import { PostHogProvider } from "@/components/analytics/posthog-provider";
+import { PerformanceMonitor, PerformanceBudgetMonitor } from "@/components/analytics/performance-monitor";
 import "./globals.css";
 
 const inter = Inter({
@@ -79,6 +81,14 @@ export default function RootLayout({
           <AuthProvider>
             {children}
           </AuthProvider>
+
+          {/* Performance Monitoring - Production Only */}
+          {process.env.NODE_ENV === 'production' && (
+            <Suspense fallback={null}>
+              <PerformanceMonitor />
+              <PerformanceBudgetMonitor />
+            </Suspense>
+          )}
         </PostHogProvider>
       </body>
     </html>

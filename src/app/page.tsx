@@ -3,14 +3,17 @@ import Header from '@/components/common/header';
 import HeroSection from '@/components/landing/hero-section';
 import FeaturesSection from '@/components/landing/features-section';
 import ProblemSolutionSection from '@/components/landing/problem-solution';
-import CaseStudiesSection from '@/components/landing/case-studies';
-import TestimonialsSection from '@/components/landing/testimonials';
-import ContactFormSection from '@/components/landing/contact-form-section';
-import FAQSection from '@/components/landing/faq-section';
 import Footer from '@/components/common/footer';
 // Analytics tracking components
 import { ScrollTracker, SectionTracker } from '@/components/analytics/tracking-components';
 import { ConsentBanner } from '@/components/analytics/posthog-provider';
+// Intersection observer-based lazy components
+import {
+  LazyCaseStudies,
+  LazyTestimonials,
+  LazyContactForm,
+  LazyFAQ
+} from '@/components/ui/lazy-section';
 
 export const metadata: Metadata = {
   title: "Automatización WhatsApp para Salones, Restaurantes y Clínicas",
@@ -51,24 +54,24 @@ export default function LandingPage() {
           <ProblemSolutionSection />
         </SectionTracker>
 
-        {/* Case Studies Section */}
+        {/* Case Studies Section - Intersection Observer Lazy Loading */}
         <SectionTracker sectionName="case-studies">
-          <CaseStudiesSection />
+          <LazyCaseStudies id="cases" />
         </SectionTracker>
 
-        {/* Testimonials Section */}
+        {/* Testimonials Section - Intersection Observer Lazy Loading */}
         <SectionTracker sectionName="testimonials">
-          <TestimonialsSection />
+          <LazyTestimonials />
         </SectionTracker>
 
-        {/* Contact Form Section */}
+        {/* Contact Form Section - Intersection Observer Lazy Loading */}
         <SectionTracker sectionName="contact-form">
-          <ContactFormSection />
+          <LazyContactForm id="contact" />
         </SectionTracker>
 
-        {/* FAQ Section */}
+        {/* FAQ Section - Intersection Observer Lazy Loading */}
         <SectionTracker sectionName="faq">
-          <FAQSection />
+          <LazyFAQ />
         </SectionTracker>
 
         {/* Footer */}

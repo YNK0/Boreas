@@ -11,7 +11,12 @@
     "check-imports": "node scripts/validate-imports.js",
     "check-all": "npm run type-check && npm run check-imports && npm run lint",
     "pre-commit": "node scripts/pre-commit-check.js",
-    "prepare": "husky install || echo 'husky not installed'"
+    "prepare": "husky install || echo 'husky not installed'",
+    "analyze": "ANALYZE=true npm run build",
+    "analyze:build": "npm run build && npm run analyze:serve",
+    "analyze:serve": "npx -p @next/bundle-analyzer serve",
+    "analyze:bundle": "node scripts/analyze-bundle.js",
+    "build:analyze": "npm run build && npm run analyze:bundle"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
