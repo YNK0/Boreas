@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { MessageSquare, TrendingUp, Users, CheckCircle, Clock } from 'lucide-react'
 import { TrackableCTA, SectionTracker } from '@/components/analytics/tracking-components'
 import { useCTATracking, useAnalytics } from '@/hooks/use-analytics'
-import { HeroDashboardCTA } from '@/components/common/dashboard-cta-button'
 
 // Hero section variant types for A/B testing
 export interface HeroVariant {
@@ -125,9 +124,6 @@ export default function HeroSection({ variant = defaultVariant, className = '' }
 
             {/* CTAs with analytics tracking */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8" role="group" aria-label="Call to action buttons">
-              {/* Primary CTA: Smart Dashboard Button */}
-              <HeroDashboardCTA className="w-full sm:w-auto" />
-
               <Link href="#contact" className="group">
                 <TrackableCTA
                   trackingType="hero"
