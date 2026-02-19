@@ -10,17 +10,19 @@ interface OptimizedImageProps extends Omit<ImageProps, 'src' | 'alt'> {
   placeholder?: 'blur' | 'empty' | 'data:image/...'
   lazy?: boolean
   webp?: boolean
+  responsive?: boolean
   sizes?: string
   quality?: number
 }
 
-export default function OptimizedImage({
+export function OptimizedImage({
   src,
   alt,
   fallbackSrc,
   placeholder = 'empty',
   lazy = true,
   webp = true,
+  responsive = false,
   sizes,
   quality = 85,
   className = '',
@@ -28,6 +30,7 @@ export default function OptimizedImage({
 }: OptimizedImageProps) {
   const [imageSrc, setImageSrc] = useState(src)
   const [imageError, setImageError] = useState(false)
+  const [loadFailed, setLoadFailed] = useState(false)
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(!lazy)
   const imgRef = useRef<HTMLDivElement>(null)
@@ -46,7 +49,7 @@ export default function OptimizedImage({
         })
       },
       {
-        rootMargin: '50px' // Start loading 50px before the image comes into view
+        rootMargin: '50px'
       }
     )
 
@@ -61,19 +64,19 @@ export default function OptimizedImage({
   const getOptimizedSrc = (originalSrc: string) => {
     if (!webp) return originalSrc
 
-    // Check if it's an external URL or already optimized
     if (originalSrc.startsWith('http') || originalSrc.includes('.webp')) {
       return originalSrc
     }
 
-    // For local images, Next.js will handle WebP conversion automatically
     return originalSrc
   }
 
   const handleError = () => {
-    if (fallbackSrc && !imageError) {
+    if (fallbackSrc && imageSrc !== fallbackSrc) {
       setImageSrc(fallbackSrc)
       setImageError(true)
+    } else if (!fallbackSrc) {
+      setLoadFailed(true)
     }
   }
 
@@ -81,9 +84,25 @@ export default function OptimizedImage({
     setIsLoaded(true)
   }
 
+  const responsiveSizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+
+  if (loadFailed) {
+    return (
+      <div
+        ref={imgRef}
+        data-testid="optimized-image-container"
+        className={`relative overflow-hidden flex items-center justify-center bg-gray-100 ${className}`}
+        style={{ minHeight: props.height || 'auto' }}
+      >
+        <div className="text-gray-500 text-sm">Error al cargar imagen</div>
+      </div>
+    )
+  }
+
   return (
     <div
       ref={imgRef}
+      data-testid="optimized-image-container"
       className={`relative overflow-hidden ${className}`}
       style={{ minHeight: props.height || 'auto' }}
     >
@@ -109,7 +128,7 @@ export default function OptimizedImage({
             onError={handleError}
             onLoad={handleLoad}
             quality={quality}
-            sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+            sizes={sizes || responsiveSizes}
             placeholder={placeholder}
             className={`transition-opacity duration-300 ${
               isLoaded ? 'opacity-100' : 'opacity-0'
@@ -133,6 +152,8 @@ export default function OptimizedImage({
   )
 }
 
+export default OptimizedImage
+
 // Avatar component with optimized images
 interface OptimizedAvatarProps {
   src?: string
@@ -149,6 +170,8 @@ export function OptimizedAvatar({
   className = '',
   fallbackText
 }: OptimizedAvatarProps) {
+  const [imgError, setImgError] = useState(false)
+
   const sizeClasses = {
     sm: 'w-8 h-8 text-xs',
     md: 'w-12 h-12 text-sm',
@@ -158,16 +181,21 @@ export function OptimizedAvatar({
 
   const initials = fallbackText || name.split(' ').map(n => n[0]).join('').toUpperCase()
 
+  const sizePx = { sm: 32, md: 48, lg: 64, xl: 80 }
+
   return (
-    <div className={`relative ${sizeClasses[size]} ${className}`}>
-      {src ? (
-        <OptimizedImage
+    <div
+      data-testid="avatar-container"
+      className={`relative ${sizeClasses[size]} ${className}`}
+    >
+      {src && !imgError ? (
+        <Image
           src={src}
-          alt={`Avatar de ${name}`}
-          width={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : 80}
-          height={size === 'sm' ? 32 : size === 'md' ? 48 : size === 'lg' ? 64 : 80}
+          alt={name}
+          width={sizePx[size]}
+          height={sizePx[size]}
           className="rounded-full object-cover"
-          fallbackSrc="/images/avatars/default-avatar.webp"
+          onError={() => setImgError(true)}
         />
       ) : (
         <div className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold`}>
@@ -194,19 +222,28 @@ export function OptimizedLogo({
 }: OptimizedLogoProps) {
   const sizeMap = {
     sm: { width: 40, height: 40 },
-    md: { width: 60, height: 60 },
-    lg: { width: 80, height: 80 }
+    md: { width: 64, height: 64 },
+    lg: { width: 96, height: 96 }
+  }
+
+  const sizeClasses = {
+    sm: 'w-10 h-10',
+    md: 'w-16 h-16',
+    lg: 'w-24 h-24'
   }
 
   return (
-    <OptimizedImage
-      src={src}
-      alt={`Logo de ${company}`}
-      width={sizeMap[size].width}
-      height={sizeMap[size].height}
-      className={`object-contain ${className}`}
-      fallbackSrc="/images/logos/default-company.webp"
-      quality={90}
-    />
+    <div
+      data-testid="logo-container"
+      className={`${sizeClasses[size]} ${className}`}
+    >
+      <Image
+        src={src}
+        alt={`${company} logo`}
+        width={sizeMap[size].width}
+        height={sizeMap[size].height}
+        className="object-contain w-full h-full"
+      />
+    </div>
   )
 }

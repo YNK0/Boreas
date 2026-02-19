@@ -8,16 +8,9 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFiles: ['<rootDir>/jest.polyfills.js'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/tests/e2e/'],
-  moduleNameMapping: {
-    // Handle module aliases (this will be automatically configured for you based on your tsconfig.json paths)
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@/components/(.*)$': '<rootDir>/src/components/$1',
-    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^@/store/(.*)$': '<rootDir>/src/store/$1',
-  },
   testMatch: [
     '<rootDir>/src/**/*.test.{js,jsx,ts,tsx}',
     '<rootDir>/tests/unit/**/*.test.{js,jsx,ts,tsx}',
@@ -59,32 +52,21 @@ const customJestConfig = {
       statements: 80,
     },
   },
-  // Performance test specific configuration
-  projects: [
-    {
-      displayName: 'Unit Tests',
-      testMatch: ['<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'],
-    },
-    {
-      displayName: 'Integration Tests',
-      testMatch: ['<rootDir>/tests/integration/**/*.test.{js,jsx,ts,tsx}'],
-    },
-    {
-      displayName: 'Performance Tests',
-      testMatch: ['<rootDir>/tests/performance/**/*.test.{js,jsx,ts,tsx}'],
-      testTimeout: 10000, // Longer timeout for performance tests
-    },
-  ],
   // Mock modules that don't work well in test environment
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/components/(.*)$': '<rootDir>/src/components/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@/store/(.*)$': '<rootDir>/src/store/$1',
     // Mock Next.js Image component
     '^next/image$': '<rootDir>/__mocks__/next-image.js',
     // Mock PostHog
     '^posthog-js$': '<rootDir>/__mocks__/posthog.js',
+    // Mock CSS modules
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
-  // Setup files to run before tests
-  setupFiles: ['<rootDir>/jest.polyfills.js'],
+  testTimeout: 10000,
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

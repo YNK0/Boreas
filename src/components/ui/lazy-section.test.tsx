@@ -18,16 +18,6 @@ const mockIntersectionObserver = jest.fn().mockImplementation((callback) => ({
 
 window.IntersectionObserver = mockIntersectionObserver
 
-// Mock React.lazy
-const mockLazyComponent = jest.fn().mockReturnValue(() => <div data-testid="lazy-component">Lazy Content</div>)
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  lazy: () => mockLazyComponent,
-  Suspense: ({ children, fallback }: any) => {
-    // Simulate suspense behavior
-    return mockLazyComponent.mock.calls.length > 0 ? children : fallback
-  }
-}))
 
 describe('LazySection', () => {
   beforeEach(() => {

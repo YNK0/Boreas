@@ -72,18 +72,18 @@ describe('HeroSection', () => {
   it('renders the conversation demo', () => {
     render(<HeroSection />)
 
-    // Check for conversation elements
+    // Check for conversation elements (multiple bot messages exist)
     expect(screen.getByText('Salón Bella')).toBeInTheDocument()
     expect(screen.getByText(/Hola! Necesito cita/)).toBeInTheDocument()
-    expect(screen.getByText(/Boreas Bot/)).toBeInTheDocument()
+    expect(screen.getAllByText(/Boreas Bot/).length).toBeGreaterThan(0)
   })
 
   it('shows performance metrics', () => {
     render(<HeroSection />)
 
-    // Check for the metrics display
+    // Check for the metrics display (24/7 appears in both metrics and bottom stats)
     expect(screen.getByText('+40%')).toBeInTheDocument()
-    expect(screen.getByText('24/7')).toBeInTheDocument()
+    expect(screen.getAllByText('24/7').length).toBeGreaterThan(0)
     expect(screen.getByText('15s')).toBeInTheDocument()
   })
 

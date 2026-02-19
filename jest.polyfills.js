@@ -12,9 +12,16 @@ global.TextDecoder = TextDecoder
 // URL polyfill
 global.URL = require('url').URL
 
-// Fetch polyfill (if needed)
+// Fetch polyfill (mock for testing)
 if (!global.fetch) {
-  global.fetch = require('node-fetch')
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({}),
+      text: () => Promise.resolve(''),
+    })
+  )
 }
 
 // Web Crypto API polyfill (basic implementation)

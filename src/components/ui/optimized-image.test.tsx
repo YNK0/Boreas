@@ -40,6 +40,7 @@ describe('OptimizedImage', () => {
           alt="Test image"
           width={300}
           height={200}
+          lazy={false}
         />
       )
 
@@ -56,11 +57,12 @@ describe('OptimizedImage', () => {
           width={300}
           height={200}
           className="custom-class"
+          lazy={false}
         />
       )
 
-      const image = screen.getByAltText('Test image')
-      expect(image).toHaveClass('custom-class')
+      const container = screen.getByTestId('optimized-image-container')
+      expect(container).toHaveClass('custom-class')
     })
   })
 
@@ -119,6 +121,7 @@ describe('OptimizedImage', () => {
           alt="Test image"
           width={300}
           height={200}
+          lazy={false}
         />
       )
 
@@ -135,6 +138,7 @@ describe('OptimizedImage', () => {
           width={300}
           height={200}
           webp={false}
+          lazy={false}
         />
       )
 
@@ -152,6 +156,7 @@ describe('OptimizedImage', () => {
           width={300}
           height={200}
           fallbackSrc="/fallback.jpg"
+          lazy={false}
         />
       )
 
@@ -172,6 +177,7 @@ describe('OptimizedImage', () => {
           alt="Test image"
           width={300}
           height={200}
+          lazy={false}
         />
       )
 
@@ -195,6 +201,7 @@ describe('OptimizedImage', () => {
           width={300}
           height={200}
           responsive={true}
+          lazy={false}
         />
       )
 
@@ -215,6 +222,7 @@ describe('OptimizedAvatar', () => {
       />
     )
 
+    // Avatar renders with alt equal to name
     const avatar = screen.getByAltText('John Doe')
     expect(avatar).toBeInTheDocument()
   })
@@ -302,6 +310,7 @@ describe('OptimizedLogo', () => {
       />
     )
 
+    // alt text is "{company} logo"
     const logo = screen.getByAltText('Test Company logo')
     expect(logo).toHaveAttribute('src', '/logo.svg')
   })
