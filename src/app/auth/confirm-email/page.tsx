@@ -1,12 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { Mail, CheckCircle, RefreshCw, ArrowRight } from 'lucide-react'
 import { useAuthActions } from '@/store/auth-store'
 import { useSearchParams } from 'next/navigation'
 
-export default function ConfirmEmailPage() {
+// Component that uses useSearchParams must be wrapped in Suspense
+function ConfirmEmailContent() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email') || 'tu@email.com'
   const { resendConfirmation } = useAuthActions()
@@ -173,5 +174,34 @@ export default function ConfirmEmailPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Loading component for Suspense fallback
+function ConfirmEmailLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="text-center">
+          <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mb-6 shadow-lg animate-pulse">
+            <Mail className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Cargando...
+          </h1>
+          <p className="text-lg text-gray-600 mb-6">
+            Preparando confirmación de email
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function ConfirmEmailPage() {
+  return (
+    <Suspense fallback={<ConfirmEmailLoading />}>
+      <ConfirmEmailContent />
+    </Suspense>
   )
 }
