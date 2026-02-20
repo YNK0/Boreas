@@ -59,13 +59,16 @@ export async function updateSession(request: NextRequest) {
     }
 
     // Authenticated but need to verify admin role
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('users')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (profile?.role !== 'admin') {
+    if (profileError || !profile || profile.role !== 'admin') {
+      if (profileError && process.env.NODE_ENV === 'development') {
+        console.error('[Admin Middleware] Role check failed:', profileError.message)
+      }
       url.pathname = '/admin/unauthorized'
       return NextResponse.redirect(url)
     }
@@ -73,11 +76,19 @@ export async function updateSession(request: NextRequest) {
 
   // Admin already logged in — redirect away from login page
   if (isAdminLogin && user) {
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('users')
       .select('role')
       .eq('id', user.id)
       .single()
+
+    if (profileError) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[Admin Middleware] Login redirect check failed:', profileError.message)
+      }
+      // On error, let user stay on login page rather than redirect
+      return supabaseResponse
+    }
 
     if (profile?.role === 'admin') {
       url.pathname = '/admin/dashboard'
