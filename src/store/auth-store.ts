@@ -281,7 +281,9 @@ export const useAuthStore = create<AuthState & AuthActions>((set, get) => ({
 
     // Listen for auth changes
     supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event)
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Auth state changed:', event)
+      }
 
       if (session?.user) {
         // Fetch user profile for new session
