@@ -1,20 +1,18 @@
 import type { NextConfig } from "next";
 
+// Bundle analyzer configuration
+const withBundleAnalyzer = process.env.ANALYZE === 'true'
+  ? require('@next/bundle-analyzer')({ enabled: true })
+  : (config: NextConfig) => config;
+
 const nextConfig: NextConfig = {
   // Enable React Strict Mode for better development experience
   reactStrictMode: true,
 
   // Enable experimental features for better performance
   experimental: {
-    // Optimize images and fonts
-    optimizeFonts: true,
     // Enable concurrent features
     reactCompiler: false, // Set to true when stable
-  },
-
-  // Bundle analyzer for production builds
-  bundleAnalyzer: {
-    enabled: process.env.ANALYZE === 'true',
   },
 
   // Webpack optimizations for code splitting
@@ -114,4 +112,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
