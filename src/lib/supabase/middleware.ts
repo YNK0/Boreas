@@ -42,6 +42,10 @@ export async function updateSession(request: NextRequest) {
   // --- Admin panel protection (/admin/*) ---
   // The admin panel is only accessible via direct URL — no public links.
   // Requires an authenticated Supabase user with role = 'admin'.
+  //
+  // NOTE: This middleware intentionally has NO rules for /dashboard or /auth/*
+  // because those routes no longer exist in this project. The /admin/* block
+  // below is the only route-level protection needed.
 
   const isAdminRoute = url.pathname.startsWith('/admin')
   const isAdminLogin = url.pathname === '/admin/login'
