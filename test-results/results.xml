@@ -1,0 +1,452 @@
+<testsuites id="" name="" tests="85" failures="0" skipped="85" errors="0" time="0.06382499999999981">
+<testsuite name="admin-access-control.test.ts" timestamp="2026-02-20T04:48:01.833Z" hostname="chromium" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="Public site: no admin exposure › landing page has no visible link to /admin" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Public site: no admin exposure › landing page header has no dashboard or admin button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/leads redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/analytics redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › visiting /admin redirects to /admin/login when unauthenticated" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders email and password fields" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders a submit button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › does NOT show a register or sign-up link" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error on empty form submission" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error for wrong credentials" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin unauthorized page › renders without crashing" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › dashboard page loads with stats cards" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › admin header nav links are present" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to leads list" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to analytics" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › sign-out redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="admin-access-control.test.ts" timestamp="2026-02-20T04:48:01.833Z" hostname="firefox" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="Public site: no admin exposure › landing page has no visible link to /admin" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Public site: no admin exposure › landing page header has no dashboard or admin button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/leads redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/analytics redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › visiting /admin redirects to /admin/login when unauthenticated" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders email and password fields" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders a submit button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › does NOT show a register or sign-up link" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error on empty form submission" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error for wrong credentials" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin unauthorized page › renders without crashing" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › dashboard page loads with stats cards" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › admin header nav links are present" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to leads list" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to analytics" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › sign-out redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="admin-access-control.test.ts" timestamp="2026-02-20T04:48:01.833Z" hostname="webkit" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="Public site: no admin exposure › landing page has no visible link to /admin" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Public site: no admin exposure › landing page header has no dashboard or admin button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/leads redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/analytics redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › visiting /admin redirects to /admin/login when unauthenticated" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders email and password fields" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders a submit button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › does NOT show a register or sign-up link" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error on empty form submission" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error for wrong credentials" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin unauthorized page › renders without crashing" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › dashboard page loads with stats cards" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › admin header nav links are present" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to leads list" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to analytics" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › sign-out redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="admin-access-control.test.ts" timestamp="2026-02-20T04:48:01.833Z" hostname="Mobile Chrome" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="Public site: no admin exposure › landing page has no visible link to /admin" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Public site: no admin exposure › landing page header has no dashboard or admin button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/leads redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/analytics redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › visiting /admin redirects to /admin/login when unauthenticated" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders email and password fields" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders a submit button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › does NOT show a register or sign-up link" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error on empty form submission" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error for wrong credentials" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin unauthorized page › renders without crashing" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › dashboard page loads with stats cards" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › admin header nav links are present" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to leads list" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to analytics" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › sign-out redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="admin-access-control.test.ts" timestamp="2026-02-20T04:48:01.833Z" hostname="Mobile Safari" tests="17" failures="0" skipped="17" time="0" errors="0">
+<testcase name="Public site: no admin exposure › landing page has no visible link to /admin" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Public site: no admin exposure › landing page header has no dashboard or admin button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/leads redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › unauthenticated visit to /admin/dashboard/analytics redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin access control: unauthenticated › visiting /admin redirects to /admin/login when unauthenticated" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders email and password fields" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › renders a submit button" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › does NOT show a register or sign-up link" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error on empty form submission" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin login page › shows an error for wrong credentials" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Admin unauthorized page › renders without crashing" classname="admin-access-control.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › dashboard page loads with stats cards" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › admin header nav links are present" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to leads list" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › can navigate to analytics" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authenticated admin dashboard › sign-out redirects to /admin/login" classname="admin-access-control.test.ts" time="0">
+<properties>
+<property name="skip" value="Skipped: set ADMIN_TEST_EMAIL and ADMIN_TEST_PASSWORD to run authenticated tests">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

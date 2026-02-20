@@ -34,7 +34,7 @@ La Landing Page es el punto de entrada principal para generar leads cualificados
 ### 1.4 Dependencias
 - **Analytics Service:** PostHog para tracking de conversión
 - **Email Service:** Resend para automation sequences
-- **Lead Management:** Integración con sistema CRM interno
+- **Lead Management:** Email de notificación al equipo via Resend
 - **SEO Requirements:** Next.js SSR para optimization
 
 ---
@@ -1803,7 +1803,7 @@ const useContentVariant = (experiment: string) => {
 **Líneas de documentación:** 1,087 líneas
 **Target alcanzado:** 800-1200 líneas ✅
 
-**Próximo paso:** `/oden:spec dashboard` para especificación del dashboard CRM
+**Próximo paso:** Implementar formulario de captura con Resend y deploy a Vercel
 
 **Completado:** 2026-02-04T04:46:05Z
 **Generado por:** Oden Forge Feature Specification Writer

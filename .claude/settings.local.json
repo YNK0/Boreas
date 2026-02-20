@@ -28,7 +28,21 @@
       "Bash(for f in docs/reference/modules/*.md)",
       "Bash(find:*)",
       "Bash(supabase:*)",
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Skill(oden:status)",
+      "Bash(npx jest:*)",
+      "Skill(oden:next)",
+      "Bash(cd:*)",
+      "Bash(for branch in issue/17-cleanup-public-dashboard-refs issue/18-admin-middleware-layout-login issue/19-admin-api-routes issue/20-admin-dashboard-views issue/21-unit-tests-admin issue/22-integration-tests-api issue/23-e2e-tests-admin issue/24-middleware-cleanup)",
+      "Bash(do)",
+      "Skill(oden:sync)",
+      "Bash(~/.claude/scripts/pm/status.sh:*)",
+      "Bash(.claude/scripts/oden/status.sh:*)",
+      "Bash(.claude/scripts/oden/next.sh:*)",
+      "Bash(chmod:*)",
+      "Bash(where:*)",
+      "Bash(kill:*)",
+      "Bash(npx next dev:*)"
     ]
   }
 }

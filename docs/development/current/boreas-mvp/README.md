@@ -1,12 +1,12 @@
-# Boreas MVP - Development Tracking
+# Boreas - Development Tracking
 
-**Feature:** B2B Automation Platform para pequeños negocios
-**Status:** En implementación (Semana 1-2 Foundation)
+**Feature:** Marketing site B2B + Lead capture
+**Status:** En implementación (Polish landing + Lead gen)
 **Iniciado:** 2026-02-06
 
 ## Descripción
 
-Servicio B2B de automatización de procesos de contacto con clientes. Landing page + CRM para vender servicios de automatización a salones, restaurantes, clínicas, etc.
+Sitio de marketing para el servicio de automatización de contacto con clientes. Landing page de alta conversión + formulario de captura de leads (waitlist/demo) para salones, restaurantes, clínicas, etc. El bot, dashboard CRM y auth son productos separados en otros repos.
 
 ## Daily Logs
 
@@ -39,19 +39,22 @@ Servicio B2B de automatización de procesos de contacto con clientes. Landing pa
 
 ## Próximas Acciones
 
-1. **Siguiente fase:** Landing page conversion optimization
-   - A/B testing del hero section con variants implementadas
-   - Analytics tracking refinement
+1. **Siguiente fase:** Polish landing + deploy a Vercel
+   - Hero section optimizado con propuesta de valor clara
+   - Analytics tracking refinement (PostHog)
    - Mobile optimization improvements
-2. **Fase 2:** Testing infrastructure completo
-   - Jest + Testing Library setup
-   - Component testing automation
-   - E2E testing framework
-3. **Fase 3:** WhatsApp automation core y business features
+2. **Fase 2:** Lead capture activo
+   - Formulario de contacto/waitlist con Resend
+   - Email de confirmación al lead + notificación al equipo
+   - Página de gracias
+3. **Fase 3:** SEO + Blog
+   - Meta tags y sitemap
+   - Primer artículo de blog
+   - Google Search Console
 
 ## 🎉 Estado Actual: Foundation Completa
 
-- ✅ **Authentication:** Funcionando con Supabase + email confirmation
+- ✅ **Landing Page:** Base implementada y funcionando
 - ✅ **Validation System:** Pre-commit checks previenen errores futuros
 - ✅ **Developer Experience:** Documentación + scripts automatizados
 - ✅ **TypeScript:** Compilación limpia sin errores bloqueantes

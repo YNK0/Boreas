@@ -8,17 +8,17 @@
 ## 1. Visión General
 
 ### 1.1 Descripción
-**Boreas** es un servicio B2B de automatización de procesos de contacto con clientes para pequeños negocios. Automatizamos comunicaciones como WhatsApp, agendar citas, seguimiento de clientes, y workflows de ventas para negocios como salones de belleza, restaurantes, clínicas, tiendas locales, etc.
+**Boreas** es un sitio de marketing B2B que promueve el servicio de automatización de contacto con clientes para pequeños negocios. El sitio captura leads interesados (waitlist/demo) que serán atendidos manualmente por el equipo de ventas.
 
-**Ejemplo caso de uso:** Salón de uñas que quiere automatizar mensajes de WhatsApp para agendar citas de manera más rápida y eficiente, con confirmaciones automáticas, recordatorios, y seguimiento post-servicio.
+**Scope de este repositorio:** Únicamente el sitio web de marketing. El bot de WhatsApp, el dashboard CRM y el sistema de autenticación de usuarios son productos separados que se desarrollan en otros repositorios.
 
 ### 1.2 Objetivo Principal
-**Vender el servicio** - Crear una landing page profesional que presente nuestro servicio de automatización, genere leads, y convierta visitantes en clientes del servicio B2B.
+**Capturar leads** — Crear una landing page profesional que presente el servicio de automatización, genere leads cualificados via formulario de contacto/waitlist, y convierta visitantes en prospectos del servicio B2B.
 
 ### 1.3 Scope
-**Modalidad:** MVP (Minimum Viable Product)
-**Timeline estimado:** 6-8 semanas
-**Target:** Landing page de ventas + dashboard básico para gestionar clientes
+**Modalidad:** Marketing site + Lead capture
+**Timeline estimado:** 3 semanas al lanzamiento
+**Target:** Landing page de alta conversión + formulario de captura + blog SEO
 
 ---
 
@@ -26,25 +26,19 @@
 
 ### 2.1 Frontend
 - **Framework Web:** Next.js (enfoque principal)
-- **Framework App:** React Native + Expo (opcional para fase 2)
 - **Justificación:**
-  - Next.js para SEO crítico - clientes deben encontrar nuestro servicio
+  - Next.js para SEO crítico — clientes deben encontrar nuestro servicio en Google
   - Landing page optimizada para conversión de leads
-  - Dashboard para gestión interna de clientes del servicio
-  - SSR para carga rápida y mejor ranking en Google
+  - SSR/SSG para carga rápida y mejor ranking
 
-### 2.2 Backend
-- **Plataforma:** Supabase
-- **Database:** PostgreSQL
-- **Auth:** Supabase Auth (email, social login)
-- **Realtime:** Supabase Realtime para actualizaciones en vivo
-- **Justificación:** Backend completo, ideal para automatización y gestión de datos
+### 2.2 Backend / Services
+- **Email:** Resend — envío de confirmaciones y notificaciones de leads
+- **Analytics:** PostHog — tracking de conversión y comportamiento
+- **Justificación:** Mínimo de infraestructura para un sitio de marketing; sin servidor propio
 
 ### 2.3 Hosting y Deployment
 - **Web:** Vercel (optimizado para Next.js, SSR, edge functions)
-- **App:** Expo EAS (updates OTA, proceso estándar de tiendas)
-- **Backend:** Supabase Cloud
-- **Storage:** Supabase Storage
+- **Dominio + CDN:** Vercel incluido
 
 ### 2.4 Desarrollo
 - **Lenguaje:** TypeScript (type safety, mejor DX)
@@ -53,7 +47,7 @@
 
 ---
 
-## 3. Features V1 (MVP)
+## 3. Features V1 (Marketing Site)
 
 ### 3.1 Core Features - Landing Page de Ventas
 - [x] **Hero Section** - Propuesta de valor clara del servicio
@@ -62,31 +56,42 @@
 - [x] **CTA principal** - Formulario de contacto/demo
 - [x] **FAQ** - Preguntas frecuentes sobre el servicio
 
-### 3.2 Core Features - Dashboard Interno
-- [x] **Gestión de leads** - Prospectos que llegan por la web
-- [x] **CRM básico** - Seguimiento de clientes potenciales
-- [x] **Pipeline de ventas** - Estados del proceso de venta
-- [x] **Métricas** - Conversión, leads, clientes activos
+### 3.2 Core Features - Lead Capture
+- [ ] **Formulario de contacto/waitlist** - Nombre, email, tipo de negocio
+- [ ] **Email de confirmación** - Vía Resend al lead
+- [ ] **Notificación al equipo** - Email con datos del lead para follow-up manual
+- [ ] **Página de gracias** - /gracias con mensaje de confirmación
 
-### 3.3 Features Técnicas
-- [x] **Formularios optimizados** - Captura de leads efectiva
-- [x] **Email automation** - Secuencias de follow-up
-- [x] **Analytics** - Tracking de conversión y comportamiento
-- [x] **SEO optimization** - Rankear para términos relevantes
+### 3.3 Core Features - SEO y Blog
+- [ ] **Meta tags** - Title, description, Open Graph en todas las páginas
+- [ ] **Sitemap.xml** - Generado automáticamente por Next.js
+- [ ] **Blog** - Artículos con keywords objetivo
+- [ ] **Google Search Console** - Propiedad verificada
+
+### 3.4 Features Técnicas
+- [x] **Analytics** - PostHog tracking pageviews y eventos de conversión
+- [ ] **Email via Resend** - Confirmaciones automáticas a leads
+- [ ] **SEO optimization** - Rankear para términos relevantes
+- [ ] **Core Web Vitals** - LCP < 2.5s, CLS < 0.1
 
 ---
 
 ## 4. Integraciones V1
 
 ### 4.1 Analytics
-- **Herramienta:** PostHog o Mixpanel
-- **Propósito:** Seguimiento de usuarios, métricas de descubrimiento
-- **Integración:** JavaScript SDK, eventos custom
+- **Herramienta:** PostHog
+- **Propósito:** Tracking de pageviews, CTAs, conversiones de formulario
+- **Integración:** JavaScript SDK, eventos custom (`cta_click`, `form_submit`)
 
-### 4.2 Futuras Integraciones
-- Email marketing (Resend)
-- Storage avanzado (Cloudinary)
-- Payments (Stripe) - post-MVP
+### 4.2 Email (Leads)
+- **Herramienta:** Resend
+- **Propósito:** Email de confirmación al lead + notificación al equipo
+- **Integración:** API via Next.js API route o Server Action
+
+### 4.3 Futuras Integraciones (post-launch)
+- CRM externo (Notion, Airtable) para gestión de leads
+- Payments (Stripe) cuando haya pricing definido
+- WhatsApp API — en repositorio separado del bot
 
 ---
 
@@ -1877,10 +1882,7 @@ interface HealthCheck {
 - Sin explicaciones básicas innecesarias
 
 ### 8.2 Updates de App
-**Estrategia:** Normal
-- Updates mensuales
-- Proceso estándar de tiendas (no crítico OTA)
-- Expo EAS para deployment simplificado
+**Nota:** App móvil está fuera del scope de este repositorio (marketing site). Esta sección es referencia histórica.
 
 ---
 
@@ -2428,7 +2430,7 @@ export const conversionFunnel = [
 
 ---
 
-## 19. Mobile Strategy (Future Phase)
+## 19. Mobile Strategy (Fuera de scope — otro repositorio)
 
 ### 19.1 React Native + Expo Architecture
 

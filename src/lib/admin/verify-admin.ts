@@ -17,7 +17,7 @@ export async function verifyAdmin(request?: NextRequest): Promise<VerifyResult> 
     .from('users')
     .select('role')
     .eq('id', user.id)
-    .single()
+    .single() as { data: { role: string } | null; error: any }
 
   if (profileError) {
     return { error: 'Service Unavailable', status: 503 }

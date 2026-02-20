@@ -11,6 +11,16 @@ export default async function AdminDashboardPage() {
   const supabase = await createClient()
   const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
 
+  // Get current user info for greeting
+  const { data: { user } } = await supabase.auth.getUser()
+  const { data: userProfile } = await supabase
+    .from('users')
+    .select('name, email, role')
+    .eq('id', user?.id)
+    .single()
+
+  const displayName = userProfile?.name || user?.email || 'Admin'
+
   const [
     { count: leadsTotal },
     { count: leadsNew },
@@ -34,7 +44,13 @@ export default async function AdminDashboardPage() {
     <div>
       <AdminHeader />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">Overview</h1>
+        {/* User Greeting */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Hola, {displayName}! 👋</h1>
+          <p className="text-gray-600 mt-1">Bienvenido al panel de administración</p>
+        </div>
+
+        <h2 className="text-xl font-semibold text-gray-800 mb-6">Overview</h2>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
