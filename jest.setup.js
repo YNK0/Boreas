@@ -33,8 +33,8 @@ global.performance = {
   now: jest.fn(() => Date.now()),
 }
 
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+// Mock window.matchMedia (jsdom only)
+if (typeof window !== 'undefined') Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
     matches: false,
@@ -48,21 +48,21 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
-// Mock scrollIntoView
-Element.prototype.scrollIntoView = jest.fn()
-
-// Mock getBoundingClientRect
-Element.prototype.getBoundingClientRect = jest.fn(() => ({
-  width: 120,
-  height: 120,
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  x: 0,
-  y: 0,
-  toJSON: jest.fn(),
-}))
+// Mock scrollIntoView and getBoundingClientRect (jsdom only)
+if (typeof Element !== 'undefined') {
+  Element.prototype.scrollIntoView = jest.fn()
+  Element.prototype.getBoundingClientRect = jest.fn(() => ({
+    width: 120,
+    height: 120,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    x: 0,
+    y: 0,
+    toJSON: jest.fn(),
+  }))
+}
 
 // Mock Image loading for tests
 global.Image = class MockImage {
