@@ -43,7 +43,9 @@ export function PostHogProvider({ children }: PostHogProviderProps) {
   useEffect(() => {
     // Check if PostHog is configured and we're in the browser
     if (typeof window === 'undefined' || !isPostHogConfigured()) {
-      if (isDevelopment()) {
+      // Silently skip PostHog initialization if not configured in development
+      // In production, this would be a configuration error
+      if (isDevelopment() && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
         console.warn('PostHog not configured properly. Set NEXT_PUBLIC_POSTHOG_KEY environment variable.')
       }
       return
