@@ -26,19 +26,25 @@ function AdminLoginForm() {
       })
 
       if (authError || !authData.user) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[Admin Login] Auth failed:', authError?.message || 'No user data')
+        }
         setError('Credenciales incorrectas')
         setLoading(false)
         return
       }
 
       // Verify admin role
-      const { data: profileData } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('users')
         .select('role')
         .eq('id', authData.user.id)
         .single() as { data: { role: string } | null; error: unknown }
 
-      if (!profileData || profileData.role !== 'admin') {
+      if (profileError || !profileData || profileData.role !== 'admin') {
+        if (profileError && process.env.NODE_ENV === 'development') {
+          console.error('[Admin Login] Role check failed:', profileError)
+        }
         // Sign out immediately — don't reveal the role check failed
         await supabase.auth.signOut()
         setError('Credenciales incorrectas')
