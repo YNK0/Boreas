@@ -83,6 +83,28 @@ describe('verifyAdmin', () => {
     expect(queryMock.eq).toHaveBeenCalledWith('id', userId)
   })
 
+  it('returns 503 when database query fails with error', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-1' } } })
+    const queryError = new Error('Database connection failed')
+    mockFrom.mockReturnValue(makeQueryMock({ data: null, error: queryError }))
+
+    const result = await verifyAdmin()
+
+    expect(result.error).toBe('Service Unavailable')
+    expect(result.status).toBe(503)
+  })
+
+  it('returns 503 when Supabase throws database errors', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'user-2' } } })
+    const dbError = { message: 'Connection timeout', code: 'PGRST301' }
+    mockFrom.mockReturnValue(makeQueryMock({ data: null, error: dbError }))
+
+    const result = await verifyAdmin()
+
+    expect(result.error).toBe('Service Unavailable')
+    expect(result.status).toBe(503)
+  })
+
   it('accepts an optional NextRequest parameter without errors', async () => {
     mockGetUser.mockResolvedValue({ data: { user: { id: 'admin-1' } } })
     mockFrom.mockReturnValue(makeQueryMock({ data: { role: 'admin' }, error: null }))
