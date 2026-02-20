@@ -10,6 +10,18 @@
  * These tests run against the local dev server (no real Supabase calls).
  * Auth-specific flows (admin login with real credentials) are gated behind
  * the ADMIN_TEST_EMAIL / ADMIN_TEST_PASSWORD env vars.
+ *
+ * SETUP FOR AUTHENTICATED TESTS:
+ * 1. Create a test admin user in your Supabase database:
+ *    - Add user to auth.users table via Supabase dashboard or auth API
+ *    - Add corresponding row to users table with role='admin'
+ * 2. Set environment variables:
+ *    - ADMIN_TEST_EMAIL=your-admin@example.com
+ *    - ADMIN_TEST_PASSWORD=your-test-password
+ * 3. Without these vars, authenticated tests will be skipped (which is fine)
+ *
+ * NOTE: The new auth flow includes 503 Service Unavailable error handling
+ * for database connection issues during admin verification.
  */
 
 import { test, expect } from '@playwright/test'
