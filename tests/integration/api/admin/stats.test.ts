@@ -78,6 +78,14 @@ describe('GET /api/admin/stats', () => {
     expect(res.status).toBe(403)
   })
 
+  it('returns 503 when verifyAdmin encounters database error', async () => {
+    mockVerifyAdmin.mockResolvedValue({ error: 'Service Unavailable', status: 503 } as any)
+    const res = await GET(makeRequest('http://localhost/api/admin/stats'))
+    expect(res.status).toBe(503)
+    const body = await res.json()
+    expect(body.error).toBe('Service Unavailable')
+  })
+
   it('returns aggregated stats with correct shape', async () => {
     // Counts for: leadsTotal, leadsNew, leadsThisWeek, visitsTotal, formsSubmitted
     setupCountStubs([100, 20, 10, 500, 25])
