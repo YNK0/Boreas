@@ -39,24 +39,46 @@ export async function updateSession(request: NextRequest) {
 
   const url = request.nextUrl.clone()
 
-  // Protect dashboard routes
-  if (url.pathname.startsWith('/dashboard') && !user) {
-    url.pathname = '/auth/login'
-    url.searchParams.set('redirectedFrom', request.nextUrl.pathname)
-    return NextResponse.redirect(url)
+  // --- Admin panel protection (/admin/*) ---
+  // The admin panel is only accessible via direct URL — no public links.
+  // Requires an authenticated Supabase user with role = 'admin'.
+
+  const isAdminRoute = url.pathname.startsWith('/admin')
+  const isAdminLogin = url.pathname === '/admin/login'
+  const isAdminUnauthorized = url.pathname === '/admin/unauthorized'
+
+  if (isAdminRoute && !isAdminLogin && !isAdminUnauthorized) {
+    // Not authenticated → redirect to admin login
+    if (!user) {
+      url.pathname = '/admin/login'
+      return NextResponse.redirect(url)
+    }
+
+    // Authenticated but need to verify admin role
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role !== 'admin') {
+      url.pathname = '/admin/unauthorized'
+      return NextResponse.redirect(url)
+    }
   }
 
-  // Protect client portal routes
-  if (url.pathname.startsWith('/client') && !user) {
-    url.pathname = '/auth/login'
-    url.searchParams.set('redirectedFrom', request.nextUrl.pathname)
-    return NextResponse.redirect(url)
-  }
+  // Admin already logged in — redirect away from login page
+  if (isAdminLogin && user) {
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .single()
 
-  // Redirect authenticated users away from auth pages
-  if (user && url.pathname.startsWith('/auth/')) {
-    url.pathname = '/dashboard'
-    return NextResponse.redirect(url)
+    if (profile?.role === 'admin') {
+      url.pathname = '/admin/dashboard'
+      return NextResponse.redirect(url)
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
