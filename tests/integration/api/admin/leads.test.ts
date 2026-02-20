@@ -58,6 +58,14 @@ describe('GET /api/admin/leads', () => {
     expect(body.error).toBe('Forbidden')
   })
 
+  it('returns 503 when verifyAdmin encounters database error', async () => {
+    mockVerifyAdmin.mockResolvedValue({ error: 'Service Unavailable', status: 503 } as any)
+    const res = await GET(makeRequest('http://localhost/api/admin/leads'))
+    expect(res.status).toBe(503)
+    const body = await res.json()
+    expect(body.error).toBe('Service Unavailable')
+  })
+
   it('returns paginated leads list on success', async () => {
     const leads = [{ id: '1', name: 'Ana', status: 'new' }]
     const stub = queryStub({ data: leads, count: 1, error: null })
